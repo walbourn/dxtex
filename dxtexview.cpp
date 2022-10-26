@@ -662,26 +662,26 @@ void CDxtexView::Zoom(float zoomfactor)
     m_rcDest.bottom = (LONG)(m_rcSrc.bottom * m_fZoom);
     SetScrollSizes(MM_TEXT, CSize(m_rcDest.Width(), m_rcDest.Height()));
 
-	BOOL h, v;
+    BOOL h, v;
 
-	CheckScrollBars(h, v);
+    CheckScrollBars(h, v);
 
-	if (h)
-	{
-	    ptCenter.x = (LONG)(ptCenter.x * zoomfactor);
-		ptUpperLeft.x = __max(ptCenter.x - windowRect.right/2, 0);
-	}
+    if (h)
+    {
+        ptCenter.x = (LONG)(ptCenter.x * zoomfactor);
+        ptUpperLeft.x = __max(ptCenter.x - windowRect.right/2, 0);
+    }
 
-	if (v)
-	{
-		ptCenter.y = (LONG)(ptCenter.y * zoomfactor);
-		ptUpperLeft.y = __max(ptCenter.y - windowRect.bottom/2, 0);
-	}
+    if (v)
+    {
+        ptCenter.y = (LONG)(ptCenter.y * zoomfactor);
+        ptUpperLeft.y = __max(ptCenter.y - windowRect.bottom/2, 0);
+    }
 
-	if (h || v)
-	{
-	    ScrollToPosition(ptUpperLeft);
-	}
+    if (h || v)
+    {
+        ScrollToPosition(ptUpperLeft);
+    }
 
     m_bTitleModsChanged = TRUE; // force title bar update
     Invalidate(); // force redraw of this view

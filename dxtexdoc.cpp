@@ -718,7 +718,7 @@ void CDxtexDoc::SetPathName(LPCTSTR lpszPathName, BOOL bAddToMRU)
 {
     CDocument::SetPathName(lpszPathName, bAddToMRU);
 
-	DWORD lcid = MAKELCID(MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US), SORT_DEFAULT);
+    DWORD lcid = MAKELCID(MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US), SORT_DEFAULT);
     TCHAR* pszLeaf = strrchr((LPTSTR)lpszPathName, '\\');
     if( pszLeaf )
     {

@@ -88,7 +88,7 @@ CDxtexCommandLineInfo::CDxtexCommandLineInfo()
 
 void CDxtexCommandLineInfo::ParseParam(const TCHAR* pszParam,BOOL bFlag,BOOL bLast)
 {   
-	DWORD lcid = MAKELCID(MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US), SORT_DEFAULT);
+    DWORD lcid = MAKELCID(MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US), SORT_DEFAULT);
     if( CompareString( lcid, NORM_IGNORECASE, pszParam, -1, TEXT("DXT1"), -1 ) == CSTR_EQUAL )
     {
         m_fmt = D3DFMT_DXT1;

@@ -171,32 +171,32 @@ class CResizeDialog : public CDialog
 {
 // Construction
 public:
-	CResizeDialog(CWnd* pParent = nullptr);   // standard constructor
+    CResizeDialog(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
-	//{{AFX_DATA(CResizeDialog)
-	enum { IDD = IDD_RESIZE };
-	UINT	m_newHeight;
-	UINT	m_newWidth;
-	CString	m_oldHeight;
-	CString	m_oldWidth;
-	//}}AFX_DATA
+    //{{AFX_DATA(CResizeDialog)
+    enum { IDD = IDD_RESIZE };
+    UINT	m_newHeight;
+    UINT	m_newWidth;
+    CString	m_oldHeight;
+    CString	m_oldWidth;
+    //}}AFX_DATA
 
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CResizeDialog)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CResizeDialog)
+    protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
 
-	// Generated message map functions
-	//{{AFX_MSG(CResizeDialog)
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CResizeDialog)
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

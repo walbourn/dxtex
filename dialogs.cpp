@@ -297,32 +297,32 @@ void CChangeFmtDlg::UpdateFmtDesc()
 
 
 CResizeDialog::CResizeDialog(CWnd* pParent /*=nullptr*/)
-	: CDialog(CResizeDialog::IDD, pParent)
+    : CDialog(CResizeDialog::IDD, pParent)
 {
-	//{{AFX_DATA_INIT(CResizeDialog)
-	m_newHeight = 0;
-	m_newWidth = 0;
-	m_oldHeight = _T("");
-	m_oldWidth = _T("");
-	//}}AFX_DATA_INIT
+    //{{AFX_DATA_INIT(CResizeDialog)
+    m_newHeight = 0;
+    m_newWidth = 0;
+    m_oldHeight = _T("");
+    m_oldWidth = _T("");
+    //}}AFX_DATA_INIT
 }
 
 
 void CResizeDialog::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CResizeDialog)
-	DDX_Text(pDX, IDC_NEWHEIGHT, m_newHeight);
-	DDV_MinMaxUInt(pDX, m_newHeight, 1, 4096);
-	DDX_Text(pDX, IDC_NEWWIDTH, m_newWidth);
-	DDV_MinMaxUInt(pDX, m_newWidth, 1, 4096);
-	DDX_Text(pDX, IDC_OLDHEIGHT, m_oldHeight);
-	DDX_Text(pDX, IDC_OLDWIDTH, m_oldWidth);
-	//}}AFX_DATA_MAP
+    CDialog::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CResizeDialog)
+    DDX_Text(pDX, IDC_NEWHEIGHT, m_newHeight);
+    DDV_MinMaxUInt(pDX, m_newHeight, 1, 4096);
+    DDX_Text(pDX, IDC_NEWWIDTH, m_newWidth);
+    DDV_MinMaxUInt(pDX, m_newWidth, 1, 4096);
+    DDX_Text(pDX, IDC_OLDHEIGHT, m_oldHeight);
+    DDX_Text(pDX, IDC_OLDWIDTH, m_oldWidth);
+    //}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CResizeDialog, CDialog)
-	//{{AFX_MSG_MAP(CResizeDialog)
-	//}}AFX_MSG_MAP
+    //{{AFX_MSG_MAP(CResizeDialog)
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
