@@ -1,11 +1,13 @@
-// Dialogs.h : header file
+//--------------------------------------------------------------------------------------
+// DirectX Texture Tool (dxtex.exe)
 //
-#if !defined(AFX_DIALOGS_H__14A2C924_FB41_4BB7_92E4_DBA7CAF1FA06__INCLUDED_)
-#define AFX_DIALOGS_H__14A2C924_FB41_4BB7_92E4_DBA7CAF1FA06__INCLUDED_
+// File: Dialogs.h
+//
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+//--------------------------------------------------------------------------------------
 
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 /////////////////////////////////////////////////////////////////////////////
 // CNewTextureDlg dialog
@@ -199,5 +201,3 @@ protected:
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_DIALOGS_H__14A2C924_FB41_4BB7_92E4_DBA7CAF1FA06__INCLUDED_)

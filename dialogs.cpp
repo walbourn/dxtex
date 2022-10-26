@@ -1,5 +1,11 @@
-// Dialogs.cpp : implementation file
+//--------------------------------------------------------------------------------------
+// DirectX Texture Tool (dxtex.exe)
 //
+// File: Dialogs.cpp
+//
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+//--------------------------------------------------------------------------------------
 
 #include "stdafx.h"
 #include "dxtex.h"

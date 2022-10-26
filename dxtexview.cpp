@@ -1,5 +1,11 @@
-// dxtexView.cpp : implementation of the CDxtexView class
+//--------------------------------------------------------------------------------------
+// DirectX Texture Tool (dxtex.exe)
 //
+// File: dxtexView.cpp
+//
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+//--------------------------------------------------------------------------------------
 
 #include "stdafx.h"
 #include "dxtex.h"
@@ -1150,4 +1156,3 @@ void CDxtexView::OnUpdateViewLowerVolumeSlice(CCmdUI* pCmdUI)
 {
     pCmdUI->Enable(GetDocument()->IsVolumeMap() && m_lwSliceCur > 0);
 }
-

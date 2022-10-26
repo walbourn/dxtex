@@ -1,7 +1,13 @@
-// formats.h header file
+//--------------------------------------------------------------------------------------
+// DirectX Texture Tool (dxtex.exe)
+//
+// File: formats.h
+//
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+//--------------------------------------------------------------------------------------
 
-#ifndef _FORMATS_H_
-#define _FORMATS_H_
+#pragma once
 
 #include "stdafx.h"
 #include "dxtex.h"
@@ -78,5 +84,3 @@ const FMTINFO fmtInfoArray[] =
     D3DFMT_A32B32G32R32F,   TEXT("A32B32G32R32F"),  TYPE_IEEE,       128,   TRUE,   IDS_FMTDESC_A32B32G32R32F, 
 };
 const int fmtInfoArraySize = sizeof(fmtInfoArray) / sizeof(fmtInfoArray[0]);
-
-#endif // _FORMATS_H_

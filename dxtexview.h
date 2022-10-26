@@ -1,14 +1,13 @@
-// dxtexView.h : interface of the CDxtexView class
+//--------------------------------------------------------------------------------------
+// DirectX Texture Tool (dxtex.exe)
 //
-/////////////////////////////////////////////////////////////////////////////
+// File: dxtexView.h
+//
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+//--------------------------------------------------------------------------------------
 
-#if !defined(AFX_DXTXVIEW_H__712C53D1_D63B_11D1_A8B5_00C04FC2DC22__INCLUDED_)
-#define AFX_DXTXVIEW_H__712C53D1_D63B_11D1_A8B5_00C04FC2DC22__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-
 
 class CDxtexView : public CScrollView
 {
@@ -129,5 +128,3 @@ inline CDxtexDoc* CDxtexView::GetDocument()
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_DXTXVIEW_H__712C53D1_D63B_11D1_A8B5_00C04FC2DC22__INCLUDED_)

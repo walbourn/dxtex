@@ -1,5 +1,11 @@
-// MainFrm.cpp : implementation of the CMainFrame class
+//--------------------------------------------------------------------------------------
+// DirectX Texture Tool (dxtex.exe)
 //
+// File: MainFrm.cpp
+//
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+//--------------------------------------------------------------------------------------
 
 #include "stdafx.h"
 #include "dxtex.h"

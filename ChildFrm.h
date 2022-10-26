@@ -1,14 +1,13 @@
-// ChildFrm.h : interface of the CChildFrame class
+//--------------------------------------------------------------------------------------
+// DirectX Texture Tool (dxtex.exe)
 //
-/////////////////////////////////////////////////////////////////////////////
+// File: ChildFrm.h
+//
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+//--------------------------------------------------------------------------------------
 
-#if !defined(AFX_CHILDFRM_H__712C53CD_D63B_11D1_A8B5_00C04FC2DC22__INCLUDED_)
-#define AFX_CHILDFRM_H__712C53CD_D63B_11D1_A8B5_00C04FC2DC22__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-
 
 class CChildFrame : public CMDIChildWnd
 {
@@ -51,5 +50,3 @@ protected:
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_CHILDFRM_H__712C53CD_D63B_11D1_A8B5_00C04FC2DC22__INCLUDED_)

@@ -1,5 +1,11 @@
-// dxtex.cpp : Defines the class behaviors for the application.
+//--------------------------------------------------------------------------------------
+// DirectX Texture Tool (dxtex.exe)
 //
+// File: dxtex.cpp
+//
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+//--------------------------------------------------------------------------------------
 
 #include "stdafx.h"
 #include "dxtex.h"

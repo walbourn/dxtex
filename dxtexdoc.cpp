@@ -1,5 +1,11 @@
-// dxtexDoc.cpp : implementation of the CDxtexDoc class
+//--------------------------------------------------------------------------------------
+// DirectX Texture Tool (dxtex.exe)
 //
+// File: dxtexDoc.cpp
+//
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+//--------------------------------------------------------------------------------------
 
 #include "stdafx.h"
 #include "dxtex.h"

@@ -7,10 +7,12 @@
 // such as DDSURFACEDESC2 and DDSCAPS2.  This file defines similar 
 // (compatible) constants and structures so that one can use DDS files 
 // without needing to include ddraw.h.
+//
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
 //--------------------------------------------------------------------------------------
 
-#ifndef _DDS_H_
-#define _DDS_H_
+#pragma once
 
 #include <dxgiformat.h>
 
@@ -140,5 +142,3 @@ typedef struct
 } DDS_HEADER_DXT10;
 
 #pragma pack(pop)
-
-#endif // _DDS_H

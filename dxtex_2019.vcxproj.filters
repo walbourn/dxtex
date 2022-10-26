@@ -84,9 +84,7 @@
     <None Include="Toolbar.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="readme.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Manifest Include="DxTex.manifest" />
+    <None Include="README.md" />
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

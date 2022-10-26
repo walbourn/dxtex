@@ -1,12 +1,13 @@
-// dxtex.h : main header file for the DXTEX application
+//--------------------------------------------------------------------------------------
+// DirectX Texture Tool (dxtex.exe)
 //
+// File: dxtex.h
+//
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+//--------------------------------------------------------------------------------------
 
-#if !defined(AFX_DXTX_H__712C53C7_D63B_11D1_A8B5_00C04FC2DC22__INCLUDED_)
-#define AFX_DXTX_H__712C53C7_D63B_11D1_A8B5_00C04FC2DC22__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 #ifndef __AFXWIN_H__
 	#error include 'stdafx.h' before including this file for PCH
@@ -96,5 +97,3 @@ private:
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_DXTX_H__712C53C7_D63B_11D1_A8B5_00C04FC2DC22__INCLUDED_)

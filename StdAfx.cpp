@@ -1,8 +1,10 @@
-// stdafx.cpp : source file that includes just the standard includes
-//	dxtx.pch will be the pre-compiled header
-//	stdafx.obj will contain the pre-compiled type information
+//--------------------------------------------------------------------------------------
+// DirectX Texture Tool (dxtex.exe)
+//
+// File: stdafx.cpp
+//
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+//--------------------------------------------------------------------------------------
 
 #include "stdafx.h"
-
-
-
