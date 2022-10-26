@@ -15,6 +15,8 @@
 #define WINVER 0x0601
 #endif
 
+#include <cstdint>
+
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
 #include <winver.h>

@@ -83,4 +83,4 @@ const FMTINFO fmtInfoArray[] =
     D3DFMT_G32R32F,         TEXT("G32R32F"),        TYPE_IEEE,       64,    FALSE,  IDS_FMTDESC_G32R32F,
     D3DFMT_A32B32G32R32F,   TEXT("A32B32G32R32F"),  TYPE_IEEE,       128,   TRUE,   IDS_FMTDESC_A32B32G32R32F, 
 };
-const int fmtInfoArraySize = sizeof(fmtInfoArray) / sizeof(fmtInfoArray[0]);
+constexpr int fmtInfoArraySize = sizeof(fmtInfoArray) / sizeof(fmtInfoArray[0]);
