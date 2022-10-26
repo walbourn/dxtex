@@ -27,7 +27,7 @@ static char THIS_FILE[] = __FILE__;
 // CDxtexDocManager::DoPromptFileName - overridden to allow importing of
 // BMPs as well as DDSs into CDxtexDocs.
 BOOL CDxtexDocManager::DoPromptFileName(CString& fileName, UINT nIDSTitle,
-            DWORD lFlags, BOOL bOpenFileDialog, CDocTemplate* pTemplate)
+            DWORD lFlags, BOOL bOpenFileDialog, CDocTemplate* /*pTemplate*/)
 {
     CFileDialog dlgFile(bOpenFileDialog);
 
@@ -78,7 +78,7 @@ BOOL CDxtexDocManager::DoPromptFileName(CString& fileName, UINT nIDSTitle,
 /////////////////////////////////////////////////////////////////////////////
 // CDxTxCommandLineInfo
 
-CDxtexCommandLineInfo::CDxtexCommandLineInfo(VOID)
+CDxtexCommandLineInfo::CDxtexCommandLineInfo()
 {
     m_fmt = D3DFMT_UNKNOWN;
     m_bAlphaComing = FALSE;
@@ -152,8 +152,8 @@ END_MESSAGE_MAP()
 CDxtexApp::CDxtexApp()
 {
     // Place all significant initialization in InitInstance
-    m_pd3d = NULL;
-    m_pd3ddev = NULL;
+    m_pd3d = nullptr;
+    m_pd3ddev = nullptr;
     m_bDeviceLost = FALSE;
 }
 
@@ -206,7 +206,7 @@ BOOL CDxtexApp::InitInstance()
 
     // Initialize DirectDraw
     m_pd3d = Direct3DCreate9(D3D_SDK_VERSION);
-    if (m_pd3d == NULL)
+    if (m_pd3d == nullptr)
     {
         AfxMessageBox(ID_ERROR_D3DCREATEFAILED, MB_OK, 0);
         return FALSE;
@@ -255,36 +255,35 @@ BOOL CDxtexApp::InitInstance()
     m_pMainWnd->DragAcceptFiles();
 
     // See if we loaded a document
-    POSITION posTemp = GetFirstDocTemplatePosition();
-    CDxtexDoc* pdoc = NULL;
+    CDxtexDoc* pdoc = nullptr;
     POSITION pos = pDocTemplate->GetFirstDocPosition();
-    if (pos != NULL)
-        pdoc = (CDxtexDoc*)pDocTemplate->GetNextDoc(pos);
+    if (pos != nullptr)
+        pdoc = reinterpret_cast<CDxtexDoc*>(pDocTemplate->GetNextDoc(pos));
 
     if (!cmdInfo.m_strFileNameAlpha.IsEmpty())
     {
-        if (pdoc != NULL)
+        if (pdoc != nullptr)
         {
             pdoc->LoadAlphaBmp(cmdInfo.m_strFileNameAlpha);
         }
     }
     if (cmdInfo.m_bMipMap)
     {
-        if (pdoc != NULL)
+        if (pdoc != nullptr)
         {
             pdoc->GenerateMipMaps();
         }
     }
     if (cmdInfo.m_fmt != 0)
     {
-        if (pdoc != NULL)
+        if (pdoc != nullptr)
         {
             pdoc->Compress(cmdInfo.m_fmt, TRUE);
         }
     }
     if (!cmdInfo.m_strFileNameSave.IsEmpty())
     {
-        if (pdoc != NULL)
+        if (pdoc != nullptr)
         {
             pdoc->OnSaveDocument(cmdInfo.m_strFileNameSave);
         }
@@ -299,7 +298,7 @@ BOOL CDxtexApp::InitInstance()
 }
 
 
-BOOL CDxtexApp::HandlePossibleLostDevice(VOID)
+BOOL CDxtexApp::HandlePossibleLostDevice()
 {
     HRESULT hr;
 
@@ -334,7 +333,7 @@ BOOL CDxtexApp::HandlePossibleLostDevice(VOID)
 }
 
 
-HRESULT CDxtexApp::InvalidateDeviceObjects(VOID)
+HRESULT CDxtexApp::InvalidateDeviceObjects()
 {
     // Tell each view of each doc to release its swap chains
     POSITION pos = GetFirstDocTemplatePosition();
@@ -343,21 +342,21 @@ HRESULT CDxtexApp::InvalidateDeviceObjects(VOID)
     pos = pDocTemplate->GetFirstDocPosition();
     for( ; ; )
     {
-        CDocument* pDoc = NULL;
-        if( pos == NULL )
+        CDocument* pDoc = nullptr;
+        if( pos == nullptr )
             break;
         pDoc = pDocTemplate->GetNextDoc( pos );
-        if( pDoc == NULL )
+        if( pDoc == nullptr )
             break;
         POSITION posView;
-        CDxtexView* pView = NULL;
+        CDxtexView* pView = nullptr;
         posView = pDoc->GetFirstViewPosition();
         for( ; ; )
         {
-            if( posView == NULL )
+            if( posView == nullptr )
                 break;
-            pView = (CDxtexView*)pDoc->GetNextView( posView );
-            if( pView == NULL )
+            pView = reinterpret_cast<CDxtexView*>(pDoc->GetNextView(posView));
+            if( pView == nullptr )
                 break;
             pView->InvalidateDeviceObjects();
         }
@@ -366,7 +365,7 @@ HRESULT CDxtexApp::InvalidateDeviceObjects(VOID)
 }
 
 
-HRESULT CDxtexApp::RestoreDeviceObjects(VOID)
+HRESULT CDxtexApp::RestoreDeviceObjects()
 {
     // Tell each view of each doc to restore
     POSITION pos = GetFirstDocTemplatePosition();
@@ -375,21 +374,21 @@ HRESULT CDxtexApp::RestoreDeviceObjects(VOID)
     pos = pDocTemplate->GetFirstDocPosition();
     for( ; ; )
     {
-        CDocument* pDoc = NULL;
-        if( pos == NULL )
+        CDocument* pDoc = nullptr;
+        if( pos == nullptr )
             break;
         pDoc = pDocTemplate->GetNextDoc( pos );
-        if( pDoc == NULL )
+        if( pDoc == nullptr )
             break;
         POSITION posView;
-        CDxtexView* pView = NULL;
+        CDxtexView* pView = nullptr;
         posView = pDoc->GetFirstViewPosition();
         for( ; ; )
         {
-            if( posView == NULL )
+            if( posView == nullptr )
                 break;
-            pView = (CDxtexView*)pDoc->GetNextView( posView );
-            if( pView == NULL )
+            pView = reinterpret_cast<CDxtexView*>(pDoc->GetNextView(posView));
+            if( pView == nullptr )
                 break;
             pView->RestoreDeviceObjects();
         }
@@ -433,9 +432,9 @@ CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
     UINT cb;
     DWORD dwHandle;
     BYTE FileVersionBuffer[2048];
-    VS_FIXEDFILEINFO* pVersion = NULL;
+    VS_FIXEDFILEINFO* pVersion = nullptr;
 
-    GetModuleFileName(NULL, szFile, MAX_PATH);
+    GetModuleFileName(nullptr, szFile, MAX_PATH);
 
     cb = GetFileVersionInfoSize(szFile, &dwHandle/*ignored*/);
     if (cb > 0)
@@ -446,9 +445,9 @@ CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
         ZeroMemory( FileVersionBuffer, sizeof(FileVersionBuffer) );
         if (GetFileVersionInfo(szFile, 0, cb, FileVersionBuffer))
         {
-            pVersion = NULL;
-            if (VerQueryValue(FileVersionBuffer, TEXT("\\"), (VOID**)&pVersion, &cb)
-                && pVersion != NULL) 
+            pVersion = nullptr;
+            if (VerQueryValue(FileVersionBuffer, TEXT("\\"), (void**)&pVersion, &cb)
+                && pVersion != nullptr) 
             {
                 strVersion.Format("Version %d.%02d.%02d.%04d", 
                     HIWORD(pVersion->dwFileVersionMS),

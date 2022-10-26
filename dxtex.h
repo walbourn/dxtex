@@ -17,12 +17,12 @@
 
 #ifndef ReleasePpo
 	#define ReleasePpo(ppo) \
-		if (*(ppo) != NULL) \
+		if (*(ppo) != nullptr) \
 		{ \
 			(*(ppo))->Release(); \
-			*(ppo) = NULL; \
+			*(ppo) = nullptr; \
 		} \
-		else (VOID)0
+		else (void)0
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
@@ -50,7 +50,7 @@ public:
 	BOOL m_bAlphaComing;
 	BOOL m_bMipMap;
 
-	CDxtexCommandLineInfo::CDxtexCommandLineInfo(VOID);
+	CDxtexCommandLineInfo();
 	virtual void ParseParam(const TCHAR* pszParam, BOOL bFlag, BOOL bLast);
 
 };
@@ -65,12 +65,12 @@ class CDxtexApp : public CWinApp
 public:
 	CDxtexApp();
 	virtual ~CDxtexApp();
-	LPDIRECT3D9 Pd3d(VOID) { return m_pd3d; }
-	LPDIRECT3DDEVICE9 Pd3ddev(VOID) { return m_pd3ddev; }
-    BOOL HandlePossibleLostDevice(VOID);
-    VOID DeviceIsLost(VOID) { m_bDeviceLost = TRUE; }
-    HRESULT InvalidateDeviceObjects(VOID);
-    HRESULT RestoreDeviceObjects(VOID);
+	LPDIRECT3D9 Pd3d() const noexcept { return m_pd3d; }
+	LPDIRECT3DDEVICE9 Pd3ddev() const noexcept { return m_pd3ddev; }
+    BOOL HandlePossibleLostDevice();
+    void DeviceIsLost() noexcept { m_bDeviceLost = TRUE; }
+    HRESULT InvalidateDeviceObjects();
+    HRESULT RestoreDeviceObjects();
 
 // Overrides
 	// ClassWizard generated virtual function overrides

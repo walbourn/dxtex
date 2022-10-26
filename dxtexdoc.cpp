@@ -79,8 +79,8 @@ void CDxtexDoc::Dump(CDumpContext& dc) const
 
 CDxtexDoc::CDxtexDoc()
 {
-    m_ptexOrig = NULL;
-    m_ptexNew = NULL;
+    m_ptexOrig = nullptr;
+    m_ptexNew = nullptr;
     m_dwWidth = 0;
     m_dwHeight = 0;
     m_dwDepth = 0;
@@ -125,7 +125,7 @@ BOOL CDxtexDoc::OnNewDocument()
     {
         LPDIRECT3DTEXTURE9 pmiptex;
         hr = pd3ddev->CreateTexture(m_dwWidth, m_dwHeight, m_numMips, 
-            0, dlg.m_fmt, D3DPOOL_MANAGED, &pmiptex, NULL);
+            0, dlg.m_fmt, D3DPOOL_MANAGED, &pmiptex, nullptr);
         if (FAILED(hr))
         {
             AfxMessageBox(ID_ERROR_CANTCREATETEXTURE);
@@ -140,7 +140,7 @@ BOOL CDxtexDoc::OnNewDocument()
         LPDIRECT3DCUBETEXTURE9 pcubetex;
         m_dwCubeMapFlags = DDS_CUBEMAP_ALLFACES;
         hr = pd3ddev->CreateCubeTexture(m_dwWidth, m_numMips, 
-            0, dlg.m_fmt, D3DPOOL_MANAGED, &pcubetex, NULL);
+            0, dlg.m_fmt, D3DPOOL_MANAGED, &pcubetex, nullptr);
         if (FAILED(hr))
         {
             AfxMessageBox(ID_ERROR_CANTCREATETEXTURE);
@@ -153,7 +153,7 @@ BOOL CDxtexDoc::OnNewDocument()
         LPDIRECT3DVOLUMETEXTURE9 pvoltex;
         m_dwDepth = dlg.m_dwDepth;
         hr = pd3ddev->CreateVolumeTexture(m_dwWidth, m_dwHeight, m_dwDepth, m_numMips, 
-            0, dlg.m_fmt, D3DPOOL_SYSTEMMEM, &pvoltex, NULL);
+            0, dlg.m_fmt, D3DPOOL_SYSTEMMEM, &pvoltex, nullptr);
         if (FAILED(hr))
         {
             AfxMessageBox(ID_ERROR_CANTCREATETEXTURE);
@@ -184,7 +184,7 @@ BOOL CDxtexDoc::OnOpenDocument(LPCTSTR lpszPathName)
         if( FAILED( D3DXCreateTextureFromFileEx( pd3ddev, lpszPathName, 
             imageinfo.Width, imageinfo.Height, imageinfo.MipLevels, 0,
             imageinfo.Format, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, 0, 
-            &imageinfo2, NULL, (LPDIRECT3DTEXTURE9*)&m_ptexOrig ) ) )
+            &imageinfo2, nullptr, (LPDIRECT3DTEXTURE9*)&m_ptexOrig ) ) )
         {
             AfxMessageBox(ID_ERROR_COULDNTLOADFILE);
             return FALSE;
@@ -227,7 +227,7 @@ BOOL CDxtexDoc::OnOpenDocument(LPCTSTR lpszPathName)
         if( FAILED( D3DXCreateVolumeTextureFromFileEx( pd3ddev, lpszPathName, 
             imageinfo.Width, imageinfo.Height, imageinfo.Depth, imageinfo.MipLevels,
             0, imageinfo.Format, D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE,
-            0, &imageinfo2, NULL, (LPDIRECT3DVOLUMETEXTURE9*)&m_ptexOrig ) ) )
+            0, &imageinfo2, nullptr, (LPDIRECT3DVOLUMETEXTURE9*)&m_ptexOrig ) ) )
         {
             AfxMessageBox(ID_ERROR_COULDNTLOADFILE);
             return FALSE;
@@ -242,7 +242,7 @@ BOOL CDxtexDoc::OnOpenDocument(LPCTSTR lpszPathName)
         if( FAILED( D3DXCreateCubeTextureFromFileEx( pd3ddev, lpszPathName, 
             imageinfo.Width, imageinfo.MipLevels, 0, imageinfo.Format, 
             D3DPOOL_MANAGED, D3DX_FILTER_NONE, D3DX_FILTER_NONE, 
-            0, &imageinfo2, NULL, (LPDIRECT3DCUBETEXTURE9*)&m_ptexOrig ) ) )
+            0, &imageinfo2, nullptr, (LPDIRECT3DCUBETEXTURE9*)&m_ptexOrig ) ) )
         {
             AfxMessageBox(ID_ERROR_COULDNTLOADFILE);
             return FALSE;
@@ -266,9 +266,9 @@ BOOL CDxtexDoc::OnOpenDocument(LPCTSTR lpszPathName)
 BOOL CDxtexDoc::OnSaveDocument(LPCTSTR lpszPathName)
 {
     LPDIRECT3DBASETEXTURE9 ptex;
-    ptex = (m_ptexNew == NULL ? m_ptexOrig : m_ptexNew);
+    ptex = (m_ptexNew == nullptr ? m_ptexOrig : m_ptexNew);
     
-    if( FAILED( D3DXSaveTextureToFile( lpszPathName, D3DXIFF_DDS, ptex, NULL ) ) )
+    if( FAILED( D3DXSaveTextureToFile( lpszPathName, D3DXIFF_DDS, ptex, nullptr ) ) )
     {
         AfxMessageBox(ID_ERROR_COULDNTSAVEFILE);
         return FALSE;
@@ -284,9 +284,9 @@ BOOL CDxtexDoc::OnSaveDocument(LPCTSTR lpszPathName)
 
 D3DFORMAT CDxtexDoc::GetFormat(LPDIRECT3DBASETEXTURE9 ptex)
 {
-    LPDIRECT3DTEXTURE9 pmiptex = NULL;
-    LPDIRECT3DCUBETEXTURE9 pcubetex = NULL;
-    LPDIRECT3DVOLUMETEXTURE9 pvoltex = NULL;
+    LPDIRECT3DTEXTURE9 pmiptex = nullptr;
+    LPDIRECT3DCUBETEXTURE9 pcubetex = nullptr;
+    LPDIRECT3DVOLUMETEXTURE9 pvoltex = nullptr;
     D3DFORMAT fmt = D3DFMT_UNKNOWN;
 
     if (IsVolumeMap())
@@ -296,19 +296,19 @@ D3DFORMAT CDxtexDoc::GetFormat(LPDIRECT3DBASETEXTURE9 ptex)
     else
         pmiptex = (LPDIRECT3DTEXTURE9)ptex;
 
-    if (pvoltex != NULL)
+    if (pvoltex != nullptr)
     {
         D3DVOLUME_DESC vd;
         pvoltex->GetLevelDesc(0, &vd);
         fmt = vd.Format;
     }
-    else if (pcubetex != NULL)
+    else if (pcubetex != nullptr)
     {
         D3DSURFACE_DESC sd;
         pcubetex->GetLevelDesc(0, &sd);
         fmt = sd.Format;
     }
-    else if( pmiptex != NULL )
+    else if( pmiptex != nullptr )
     {
         D3DSURFACE_DESC sd;
         pmiptex->GetLevelDesc(0, &sd);
@@ -326,7 +326,7 @@ HRESULT CDxtexDoc::EnsureAlpha(LPDIRECT3DBASETEXTURE9* pptex)
     HRESULT hr;
     D3DFORMAT fmtCur = GetFormat(*pptex);
     D3DFORMAT fmtNew = D3DFMT_UNKNOWN;
-    LPDIRECT3DBASETEXTURE9 ptex = NULL;
+    LPDIRECT3DBASETEXTURE9 ptex = nullptr;
 
     switch (fmtCur)
     {
@@ -388,7 +388,7 @@ HRESULT CDxtexDoc::LoadAlphaBmp(CString& strPath)
     if (FAILED(hr))
         return hr;
     
-    UpdateAllViews(NULL, 1); // tell CView to pick up new surface pointers
+    UpdateAllViews(nullptr, 1); // tell CView to pick up new surface pointers
     return S_OK;
 }
 
@@ -446,7 +446,7 @@ HRESULT CDxtexDoc::ChangeFormat(LPDIRECT3DBASETEXTURE9 ptexCur, D3DFORMAT fmtTo,
     if (IsVolumeMap())
     {
         hr = pd3ddev->CreateVolumeTexture(m_dwWidth, m_dwHeight, m_dwDepth, m_numMips,
-            0, fmtTo, D3DPOOL_SYSTEMMEM, &pvoltexNew, NULL);
+            0, fmtTo, D3DPOOL_SYSTEMMEM, &pvoltexNew, nullptr);
         if (FAILED(hr))
             return hr;
         *pptexNew = pvoltexNew;
@@ -456,7 +456,7 @@ HRESULT CDxtexDoc::ChangeFormat(LPDIRECT3DBASETEXTURE9 ptexCur, D3DFORMAT fmtTo,
     else if (IsCubeMap())
     {
         hr = pd3ddev->CreateCubeTexture(m_dwWidth, m_numMips, 
-             0, fmtTo, D3DPOOL_MANAGED, &pcubetexNew, NULL);
+             0, fmtTo, D3DPOOL_MANAGED, &pcubetexNew, nullptr);
         if (FAILED(hr))
             return hr;
         *pptexNew = pcubetexNew;
@@ -484,7 +484,7 @@ HRESULT CDxtexDoc::ChangeFormat(LPDIRECT3DBASETEXTURE9 ptexCur, D3DFORMAT fmtTo,
         }
 
         hr = pd3ddev->CreateTexture(m_dwWidth, m_dwHeight, m_numMips, 
-             0, fmtTo, D3DPOOL_MANAGED, &pmiptexNew, NULL);
+             0, fmtTo, D3DPOOL_MANAGED, &pmiptexNew, nullptr);
         if (FAILED(hr))
             return hr;
         *pptexNew = pmiptexNew;
@@ -500,7 +500,7 @@ HRESULT CDxtexDoc::ChangeFormat(LPDIRECT3DBASETEXTURE9 ptexCur, D3DFORMAT fmtTo,
 HRESULT CDxtexDoc::Compress(D3DFORMAT fmtTo, BOOL bSwitchView)
 {
     HRESULT hr;
-    LPDIRECT3DBASETEXTURE9 ptexNew = NULL;
+    LPDIRECT3DBASETEXTURE9 ptexNew = nullptr;
 
     if (FAILED(hr = ChangeFormat(m_ptexOrig, fmtTo, &ptexNew)))
         return hr;
@@ -512,7 +512,7 @@ HRESULT CDxtexDoc::Compress(D3DFORMAT fmtTo, BOOL bSwitchView)
     m_bTitleModsChanged = TRUE; // force title bar update
     if (bSwitchView)
     {
-        if( AfxGetMainWnd() != NULL )
+        if( AfxGetMainWnd() != nullptr )
             AfxGetMainWnd()->PostMessage(WM_COMMAND, ID_VIEW_COMPRESSED, 0);
     }
 
@@ -536,16 +536,16 @@ void CDxtexDoc::GenerateMipMaps()
     LONG lwTempW;
     LONG lwPowsW;
     LONG lwPowsH;
-    LPDIRECT3DTEXTURE9 pddsNew = NULL;
+    LPDIRECT3DTEXTURE9 pddsNew = nullptr;
     D3DFORMAT fmt;
     HRESULT hr;
     LPDIRECT3DDEVICE9 pd3ddev = PDxtexApp()->Pd3ddev();
-    LPDIRECT3DTEXTURE9 pmiptex = NULL;
-    LPDIRECT3DCUBETEXTURE9 pcubetex = NULL;
-    LPDIRECT3DVOLUMETEXTURE9 pvoltex = NULL;
-    LPDIRECT3DTEXTURE9 pmiptexNew = NULL;
-    LPDIRECT3DCUBETEXTURE9 pcubetexNew = NULL;
-    LPDIRECT3DVOLUMETEXTURE9 pvoltexNew = NULL;
+    LPDIRECT3DTEXTURE9 pmiptex = nullptr;
+    LPDIRECT3DCUBETEXTURE9 pcubetex = nullptr;
+    LPDIRECT3DVOLUMETEXTURE9 pvoltex = nullptr;
+    LPDIRECT3DTEXTURE9 pmiptexNew = nullptr;
+    LPDIRECT3DCUBETEXTURE9 pcubetexNew = nullptr;
+    LPDIRECT3DVOLUMETEXTURE9 pvoltexNew = nullptr;
     LPDIRECT3DSURFACE9 psurfSrc;
     LPDIRECT3DSURFACE9 psurfDest;
     LPDIRECT3DVOLUME9 pvolSrc;
@@ -558,13 +558,13 @@ void CDxtexDoc::GenerateMipMaps()
     else
         pmiptex = (LPDIRECT3DTEXTURE9)m_ptexOrig;
 
-    if (pvoltex != NULL)
+    if (pvoltex != nullptr)
     {
         D3DVOLUME_DESC vd;
         pvoltex->GetLevelDesc(0, &vd);
         fmt = vd.Format;
     }
-    else if (pcubetex != NULL)
+    else if (pcubetex != nullptr)
     {
         D3DSURFACE_DESC sd;
         pcubetex->GetLevelDesc(0, &sd);
@@ -594,102 +594,102 @@ void CDxtexDoc::GenerateMipMaps()
     m_numMips = lwPowsW > lwPowsH ? lwPowsW : lwPowsH;
 
     // Create destination mipmap surface - same format as source
-    if (pvoltex != NULL)
+    if (pvoltex != nullptr)
     {
         if (FAILED(hr = pd3ddev->CreateVolumeTexture(m_dwWidth, m_dwHeight, m_dwDepth, 
-            m_numMips, 0, fmt, D3DPOOL_SYSTEMMEM, &pvoltexNew, NULL)))
+            m_numMips, 0, fmt, D3DPOOL_SYSTEMMEM, &pvoltexNew, nullptr)))
         {
             goto LFail;
         }
         hr = pvoltex->GetVolumeLevel(0, &pvolSrc);
         hr = pvoltexNew->GetVolumeLevel(0, &pvolDest);
-        hr = D3DXLoadVolumeFromVolume(pvolDest, NULL, NULL, pvolSrc, NULL, NULL, 
+        hr = D3DXLoadVolumeFromVolume(pvolDest, nullptr, nullptr, pvolSrc, nullptr, nullptr, 
             D3DX_DEFAULT, 0);
         ReleasePpo(&pvolSrc);
         ReleasePpo(&pvolDest);
-        hr = D3DXFilterVolumeTexture(pvoltexNew, NULL, 0, D3DX_DEFAULT);
+        hr = D3DXFilterVolumeTexture(pvoltexNew, nullptr, 0, D3DX_DEFAULT);
     }
-    else if (pmiptex != NULL)
+    else if (pmiptex != nullptr)
     {
         if (FAILED(hr = pd3ddev->CreateTexture(m_dwWidth, m_dwHeight, m_numMips, 
-             0, fmt, D3DPOOL_MANAGED, &pmiptexNew, NULL)))
+             0, fmt, D3DPOOL_MANAGED, &pmiptexNew, nullptr)))
         {
             goto LFail;
         }
         hr = pmiptex->GetSurfaceLevel(0, &psurfSrc);
         hr = pmiptexNew->GetSurfaceLevel(0, &psurfDest);
-        hr = D3DXLoadSurfaceFromSurface(psurfDest, NULL, NULL, psurfSrc, NULL, NULL, 
+        hr = D3DXLoadSurfaceFromSurface(psurfDest, nullptr, nullptr, psurfSrc, nullptr, nullptr, 
             D3DX_DEFAULT, 0);
         ReleasePpo(&psurfSrc);
         ReleasePpo(&psurfDest);
-        hr = D3DXFilterTexture(pmiptexNew, NULL, 0, D3DX_DEFAULT);
+        hr = D3DXFilterTexture(pmiptexNew, nullptr, 0, D3DX_DEFAULT);
     }
     else
     {
         if (FAILED(hr = pd3ddev->CreateCubeTexture(m_dwWidth, m_numMips, 
-             0, fmt, D3DPOOL_MANAGED, &pcubetexNew, NULL)))
+             0, fmt, D3DPOOL_MANAGED, &pcubetexNew, nullptr)))
         {
             goto LFail;
         }
         hr = pcubetex->GetCubeMapSurface(D3DCUBEMAP_FACE_POSITIVE_X, 0, &psurfSrc);
         hr = pcubetexNew->GetCubeMapSurface(D3DCUBEMAP_FACE_POSITIVE_X, 0, &psurfDest);
-        hr = D3DXLoadSurfaceFromSurface(psurfDest, NULL, NULL, psurfSrc, NULL, NULL, 
+        hr = D3DXLoadSurfaceFromSurface(psurfDest, nullptr, nullptr, psurfSrc, nullptr, nullptr, 
             D3DX_DEFAULT, 0);
         ReleasePpo(&psurfSrc);
         ReleasePpo(&psurfDest);
         hr = pcubetex->GetCubeMapSurface(D3DCUBEMAP_FACE_NEGATIVE_X, 0, &psurfSrc);
         hr = pcubetexNew->GetCubeMapSurface(D3DCUBEMAP_FACE_NEGATIVE_X, 0, &psurfDest);
-        hr = D3DXLoadSurfaceFromSurface(psurfDest, NULL, NULL, psurfSrc, NULL, NULL, 
+        hr = D3DXLoadSurfaceFromSurface(psurfDest, nullptr, nullptr, psurfSrc, nullptr, nullptr, 
             D3DX_DEFAULT, 0);
         ReleasePpo(&psurfSrc);
         ReleasePpo(&psurfDest);
         hr = pcubetex->GetCubeMapSurface(D3DCUBEMAP_FACE_POSITIVE_Y, 0, &psurfSrc);
         hr = pcubetexNew->GetCubeMapSurface(D3DCUBEMAP_FACE_POSITIVE_Y, 0, &psurfDest);
-        hr = D3DXLoadSurfaceFromSurface(psurfDest, NULL, NULL, psurfSrc, NULL, NULL, 
+        hr = D3DXLoadSurfaceFromSurface(psurfDest, nullptr, nullptr, psurfSrc, nullptr, nullptr, 
             D3DX_DEFAULT, 0);
         ReleasePpo(&psurfSrc);
         ReleasePpo(&psurfDest);
         hr = pcubetex->GetCubeMapSurface(D3DCUBEMAP_FACE_NEGATIVE_Y, 0, &psurfSrc);
         hr = pcubetexNew->GetCubeMapSurface(D3DCUBEMAP_FACE_NEGATIVE_Y, 0, &psurfDest);
-        hr = D3DXLoadSurfaceFromSurface(psurfDest, NULL, NULL, psurfSrc, NULL, NULL, 
+        hr = D3DXLoadSurfaceFromSurface(psurfDest, nullptr, nullptr, psurfSrc, nullptr, nullptr, 
             D3DX_DEFAULT, 0);
         ReleasePpo(&psurfSrc);
         ReleasePpo(&psurfDest);
         hr = pcubetex->GetCubeMapSurface(D3DCUBEMAP_FACE_POSITIVE_Z, 0, &psurfSrc);
         hr = pcubetexNew->GetCubeMapSurface(D3DCUBEMAP_FACE_POSITIVE_Z, 0, &psurfDest);
-        hr = D3DXLoadSurfaceFromSurface(psurfDest, NULL, NULL, psurfSrc, NULL, NULL, 
+        hr = D3DXLoadSurfaceFromSurface(psurfDest, nullptr, nullptr, psurfSrc, nullptr, nullptr, 
             D3DX_DEFAULT, 0);
         ReleasePpo(&psurfSrc);
         ReleasePpo(&psurfDest);
         hr = pcubetex->GetCubeMapSurface(D3DCUBEMAP_FACE_NEGATIVE_Z, 0, &psurfSrc);
         hr = pcubetexNew->GetCubeMapSurface(D3DCUBEMAP_FACE_NEGATIVE_Z, 0, &psurfDest);
-        hr = D3DXLoadSurfaceFromSurface(psurfDest, NULL, NULL, psurfSrc, NULL, NULL, 
+        hr = D3DXLoadSurfaceFromSurface(psurfDest, nullptr, nullptr, psurfSrc, nullptr, nullptr, 
             D3DX_DEFAULT, 0);
         ReleasePpo(&psurfSrc);
         ReleasePpo(&psurfDest);
-        hr = D3DXFilterCubeTexture(pcubetexNew, NULL, 0, D3DX_DEFAULT);
+        hr = D3DXFilterCubeTexture(pcubetexNew, nullptr, 0, D3DX_DEFAULT);
     }
 
     ReleasePpo(&m_ptexOrig);
-    if (pvoltexNew != NULL)
+    if (pvoltexNew != nullptr)
         m_ptexOrig = pvoltexNew;
-    else if (pcubetexNew != NULL)
+    else if (pcubetexNew != nullptr)
         m_ptexOrig = pcubetexNew;
     else
         m_ptexOrig = pmiptexNew;
 
-    if (m_ptexNew != NULL)
+    if (m_ptexNew != nullptr)
     {
         // Rather than filtering down the (probably-compressed) m_ptexNew 
         // top level, compress each mip level from the (probably-uncompressed)
         // m_ptexOrig levels.
-        if (pvoltexNew != NULL)
+        if (pvoltexNew != nullptr)
         {
             D3DVOLUME_DESC vd;
             ((LPDIRECT3DVOLUMETEXTURE9)m_ptexNew)->GetLevelDesc(0, &vd);
             fmt = vd.Format;
         }
-        else if (pcubetexNew != NULL)
+        else if (pcubetexNew != nullptr)
         {
             D3DSURFACE_DESC sd;
             ((LPDIRECT3DTEXTURE9)m_ptexNew)->GetLevelDesc(0, &sd);
@@ -705,7 +705,7 @@ void CDxtexDoc::GenerateMipMaps()
     }
 
     m_bTitleModsChanged = TRUE; // Generate title bar update
-    UpdateAllViews(NULL, 1); // tell CView to pick up new surface pointers
+    UpdateAllViews(nullptr, 1); // tell CView to pick up new surface pointers
     SetModifiedFlag();
     return;
 
@@ -735,7 +735,7 @@ void CDxtexDoc::SetPathName(LPCTSTR lpszPathName, BOOL bAddToMRU)
     }
 }
 
-DWORD CDxtexDoc::NumMips(VOID)
+DWORD CDxtexDoc::NumMips() const
 {
     return m_numMips;
 }
@@ -763,7 +763,7 @@ void CDxtexDoc::OnFileOpenAlpha()
     if( !FormatContainsAlpha(sd.Format)  )
     {
         // If it doesn't then see if the new does
-        if (m_ptexNew != NULL)
+        if (m_ptexNew != nullptr)
         {
             ((LPDIRECT3DTEXTURE9)m_ptexNew)->GetLevelDesc(0, &sd);
             if( !FormatContainsAlpha(sd.Format) )
@@ -775,9 +775,9 @@ void CDxtexDoc::OnFileOpenAlpha()
             {
                 ReleasePpo(&m_ptexOrig);
                 m_ptexOrig = m_ptexNew;
-                m_ptexNew  = NULL;
+                m_ptexNew  = nullptr;
                 CWnd* Wnd = AfxGetMainWnd();
-                if( Wnd != NULL )
+                if( Wnd != nullptr )
                     Wnd->PostMessage(WM_COMMAND, ID_VIEW_ORIGINAL, 0);
             }
         }
@@ -801,12 +801,12 @@ void CDxtexDoc::OnFileOpenAlpha()
         return;
     if (m_numMips > 1)
         OnGenerateMipMaps();
-    else if (m_ptexNew != NULL)
+    else if (m_ptexNew != nullptr)
     {
         ((LPDIRECT3DTEXTURE9)m_ptexNew)->GetLevelDesc(0, &sd);
         Compress(sd.Format, FALSE);
     }
-    UpdateAllViews(NULL, 1);
+    UpdateAllViews(nullptr, 1);
 }
 
 
@@ -824,29 +824,28 @@ HRESULT CDxtexDoc::LoadAlphaIntoSurface(CString& strPath, LPDIRECT3DSURFACE9 psu
     // Load the alpha BMP into psurfAlpha, a new A8R8G8B8 surface
     hr = D3DXCreateTextureFromFileEx(pd3ddev, strPath, sd.Width, sd.Height, 1, 0, 
         D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, D3DX_DEFAULT, 
-        D3DX_DEFAULT, 0, NULL, NULL, &ptexAlpha);
+        D3DX_DEFAULT, 0, nullptr, nullptr, &ptexAlpha);
     hr = ptexAlpha->GetSurfaceLevel(0, &psurfAlpha);
 
     // Copy the target surface into an A8R8G8B8 surface
-    hr = pd3ddev->CreateOffscreenPlainSurface(sd.Width, sd.Height, D3DFMT_A8R8G8B8, D3DPOOL_SCRATCH, &psurfTarget, NULL);
-    hr = D3DXLoadSurfaceFromSurface(psurfTarget, NULL, NULL, psurf, NULL, NULL, 
+    hr = pd3ddev->CreateOffscreenPlainSurface(sd.Width, sd.Height, D3DFMT_A8R8G8B8, D3DPOOL_SCRATCH, &psurfTarget, nullptr);
+    hr = D3DXLoadSurfaceFromSurface(psurfTarget, nullptr, nullptr, psurf, nullptr, nullptr, 
         D3DX_DEFAULT, 0);
 
     // Fill in the alpha channels of psurfTarget based on the blue channel of psurfAlpha
     D3DLOCKED_RECT lrSrc;
     D3DLOCKED_RECT lrDest;
 
-    hr = psurfAlpha->LockRect(&lrSrc, NULL, D3DLOCK_READONLY);
-    hr = psurfTarget->LockRect(&lrDest, NULL, 0);
+    hr = psurfAlpha->LockRect(&lrSrc, nullptr, D3DLOCK_READONLY);
+    hr = psurfTarget->LockRect(&lrDest, nullptr, 0);
 
     DWORD xp;
     DWORD yp;
-    DWORD* pdwRowSrc = (DWORD*)lrSrc.pBits;
-    DWORD* pdwRowDest = (DWORD*)lrDest.pBits;
+    auto pdwRowSrc = static_cast<DWORD*>(lrSrc.pBits);
+    auto pdwRowDest = static_cast<DWORD*>(lrDest.pBits);
     DWORD* pdwSrc;
     DWORD* pdwDest;
     DWORD dwAlpha;
-    LONG dataBytesPerRow = 4 * sd.Width;
 
     for (yp = 0; yp < sd.Height; yp++)
     {
@@ -869,7 +868,7 @@ HRESULT CDxtexDoc::LoadAlphaIntoSurface(CString& strPath, LPDIRECT3DSURFACE9 psu
     psurfTarget->UnlockRect();
 
     // Copy psurfTarget back into real surface
-    hr = D3DXLoadSurfaceFromSurface(psurf, NULL, NULL, psurfTarget, NULL, NULL, 
+    hr = D3DXLoadSurfaceFromSurface(psurf, nullptr, nullptr, psurfTarget, nullptr, nullptr, 
         D3DX_DEFAULT, 0);
     
     // Release allocated interfaces
@@ -923,9 +922,9 @@ void CDxtexDoc::OpenSubsurface(D3DCUBEMAP_FACES FaceType, LONG lwMip, LONG lwSli
     HRESULT hr;
     CString fileName;
     LPDIRECT3DDEVICE9 pd3ddev = PDxtexApp()->Pd3ddev();
-    LPDIRECT3DTEXTURE9 ptex = NULL;
-    LPDIRECT3DSURFACE9 psurfOrig = NULL;
-    LPDIRECT3DSURFACE9 psurfNew = NULL;
+    LPDIRECT3DTEXTURE9 ptex = nullptr;
+    LPDIRECT3DSURFACE9 psurfOrig = nullptr;
+    LPDIRECT3DSURFACE9 psurfNew = nullptr;
 
     if (!PromptForBmp(&fileName))
         return;
@@ -938,16 +937,16 @@ void CDxtexDoc::OpenSubsurface(D3DCUBEMAP_FACES FaceType, LONG lwMip, LONG lwSli
     else if (IsCubeMap())
     {
         hr = ((LPDIRECT3DCUBETEXTURE9)m_ptexOrig)->GetCubeMapSurface(FaceType, lwMip, &psurfOrig);
-        if (m_ptexNew != NULL)
+        if (m_ptexNew != nullptr)
             hr = ((LPDIRECT3DCUBETEXTURE9)m_ptexNew)->GetCubeMapSurface(FaceType, lwMip, &psurfNew);
-        hr = D3DXLoadSurfaceFromFile(psurfOrig, NULL, NULL, fileName, NULL, D3DX_DEFAULT, 0, NULL);
+        hr = D3DXLoadSurfaceFromFile(psurfOrig, nullptr, nullptr, fileName, nullptr, D3DX_DEFAULT, 0, nullptr);
     }
     else
     {
         hr = ((LPDIRECT3DTEXTURE9)m_ptexOrig)->GetSurfaceLevel(lwMip, &psurfOrig);
-        if (m_ptexNew != NULL)
+        if (m_ptexNew != nullptr)
             hr = ((LPDIRECT3DTEXTURE9)m_ptexNew)->GetSurfaceLevel(lwMip, &psurfNew);
-        hr = D3DXLoadSurfaceFromFile(psurfOrig, NULL, NULL, fileName, NULL, D3DX_DEFAULT, 0, NULL);
+        hr = D3DXLoadSurfaceFromFile(psurfOrig, nullptr, nullptr, fileName, nullptr, D3DX_DEFAULT, 0, nullptr);
     }
 
     // Look for "foo_a.bmp" for alpha channel
@@ -973,9 +972,9 @@ void CDxtexDoc::OpenSubsurface(D3DCUBEMAP_FACES FaceType, LONG lwMip, LONG lwSli
             ReleasePpo(&pvol);
         }
     }
-    else if (psurfNew != NULL)
+    else if (psurfNew != nullptr)
     {
-        hr = D3DXLoadSurfaceFromSurface(psurfNew, NULL, NULL, psurfOrig, NULL, NULL, D3DX_DEFAULT, 0);
+        hr = D3DXLoadSurfaceFromSurface(psurfNew, nullptr, nullptr, psurfOrig, nullptr, nullptr, D3DX_DEFAULT, 0);
     }
 
     ReleasePpo(&psurfOrig);
@@ -983,7 +982,7 @@ void CDxtexDoc::OpenSubsurface(D3DCUBEMAP_FACES FaceType, LONG lwMip, LONG lwSli
     ReleasePpo(&ptex);
 
     SetModifiedFlag(TRUE);
-    UpdateAllViews(NULL, 1);
+    UpdateAllViews(nullptr, 1);
 }
 
 
@@ -992,12 +991,12 @@ void CDxtexDoc::OpenAlphaSubsurface(D3DCUBEMAP_FACES FaceType, LONG lwMip, LONG 
     HRESULT hr;
     CString fileName;
     LPDIRECT3DDEVICE9 pd3ddev = PDxtexApp()->Pd3ddev();
-    LPDIRECT3DTEXTURE9 ptexOrig = NULL;
-    LPDIRECT3DTEXTURE9 ptexNew = NULL;
-    LPDIRECT3DSURFACE9 psurfOrig = NULL;
-    LPDIRECT3DSURFACE9 psurfNew = NULL;
-    LPDIRECT3DVOLUME9 pvolOrig = NULL;
-    LPDIRECT3DVOLUME9 pvolNew = NULL;
+    LPDIRECT3DTEXTURE9 ptexOrig = nullptr;
+    LPDIRECT3DTEXTURE9 ptexNew = nullptr;
+    LPDIRECT3DSURFACE9 psurfOrig = nullptr;
+    LPDIRECT3DSURFACE9 psurfNew = nullptr;
+    LPDIRECT3DVOLUME9 pvolOrig = nullptr;
+    LPDIRECT3DVOLUME9 pvolNew = nullptr;
     D3DSURFACE_DESC sd;
     DWORD dwWidth = m_dwWidth;
     DWORD dwHeight = m_dwHeight;
@@ -1010,14 +1009,14 @@ void CDxtexDoc::OpenAlphaSubsurface(D3DCUBEMAP_FACES FaceType, LONG lwMip, LONG 
             dwHeight /= 2;
         }
         hr = pd3ddev->CreateTexture(dwWidth, dwHeight, 1, 
-             0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &ptexOrig, NULL);
+             0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &ptexOrig, nullptr);
         hr = ptexOrig->GetSurfaceLevel(0, &psurfOrig);
         hr = ((LPDIRECT3DVOLUMETEXTURE9)m_ptexOrig)->GetVolumeLevel(lwMip, &pvolOrig);
         hr = LoadSurfaceFromVolumeSlice(pvolOrig, lwSlice, psurfOrig);
-        if (m_ptexNew != NULL)
+        if (m_ptexNew != nullptr)
         {
             hr = pd3ddev->CreateTexture(dwWidth, dwHeight, 1, 
-                 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &ptexNew, NULL);
+                 0, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &ptexNew, nullptr);
             hr = ptexNew->GetSurfaceLevel(0, &psurfOrig);
             hr = ((LPDIRECT3DVOLUMETEXTURE9)m_ptexOrig)->GetVolumeLevel(lwMip, &pvolNew);
             hr = LoadSurfaceFromVolumeSlice(pvolNew, lwSlice, psurfOrig);
@@ -1032,7 +1031,7 @@ void CDxtexDoc::OpenAlphaSubsurface(D3DCUBEMAP_FACES FaceType, LONG lwMip, LONG 
             AfxMessageBox(ID_ERROR_PREMULTALPHA);
             goto LCleanup;
         }
-        if (m_ptexNew != NULL)
+        if (m_ptexNew != nullptr)
         {
             hr = ((LPDIRECT3DCUBETEXTURE9)m_ptexNew)->GetCubeMapSurface(FaceType, lwMip, &psurfNew);
             ((LPDIRECT3DCUBETEXTURE9)m_ptexNew)->GetLevelDesc(lwMip, &sd);
@@ -1060,7 +1059,7 @@ void CDxtexDoc::OpenAlphaSubsurface(D3DCUBEMAP_FACES FaceType, LONG lwMip, LONG 
             bAlphaFound = TRUE;
         }
 
-        if (m_ptexNew != NULL)
+        if (m_ptexNew != nullptr)
         {
             hr = ((LPDIRECT3DTEXTURE9)m_ptexNew)->GetSurfaceLevel(lwMip, &psurfNew);
             ((LPDIRECT3DTEXTURE9)m_ptexNew)->GetLevelDesc(lwMip, &sd);
@@ -1089,23 +1088,23 @@ void CDxtexDoc::OpenAlphaSubsurface(D3DCUBEMAP_FACES FaceType, LONG lwMip, LONG 
     if (FAILED(hr = LoadAlphaIntoSurface(fileName, psurfOrig)))
         goto LCleanup;
 
-    if (psurfNew != NULL)
+    if (psurfNew != nullptr)
     {
         if (FAILED(hr = LoadAlphaIntoSurface(fileName, psurfNew)))
             goto LCleanup;
     }
 
-    if (pvolOrig != NULL)
+    if (pvolOrig != nullptr)
     {
         hr = LoadVolumeSliceFromSurface(pvolOrig, lwSlice, psurfOrig);
     }
-    if (pvolNew != NULL)
+    if (pvolNew != nullptr)
     {
         hr = LoadVolumeSliceFromSurface(pvolNew, lwSlice, psurfNew);
     }
 
     SetModifiedFlag(TRUE);
-    UpdateAllViews(NULL, 1);
+    UpdateAllViews(nullptr, 1);
 
 LCleanup:
     ReleasePpo(&psurfOrig);
@@ -1138,8 +1137,8 @@ void CDxtexDoc::OnFormatChangeCubeMapFaces()
     {
         hr = ((LPDIRECT3DTEXTURE9)m_ptexOrig)->GetSurfaceLevel(iLevel, &psurfSrc);
         hr = ptexCube->GetCubeMapSurface((D3DCUBEMAP_FACES)cubeMapDlg.m_iFace, iLevel, &psurfDest);
-        hr = D3DXLoadSurfaceFromSurface(psurfDest, NULL, NULL, 
-            psurfSrc, NULL, NULL, D3DX_DEFAULT, 0);
+        hr = D3DXLoadSurfaceFromSurface(psurfDest, nullptr, nullptr, 
+            psurfSrc, nullptr, nullptr, D3DX_DEFAULT, 0);
         ReleasePpo(&psurfSrc);
         ReleasePpo(&psurfDest);
     }
@@ -1147,7 +1146,7 @@ void CDxtexDoc::OnFormatChangeCubeMapFaces()
     m_ptexOrig = ptexCube;
 
     // Change m_ptexNew into a cubemap too
-    if (m_ptexNew != NULL)
+    if (m_ptexNew != nullptr)
     {
         ((LPDIRECT3DTEXTURE9)m_ptexNew)->GetLevelDesc(0, &sd);
         hr = D3DXCreateCubeTexture(pd3ddev, m_dwWidth, m_numMips, 0, sd.Format, D3DPOOL_MANAGED, &ptexCube);
@@ -1155,8 +1154,8 @@ void CDxtexDoc::OnFormatChangeCubeMapFaces()
         {
             hr = ((LPDIRECT3DTEXTURE9)m_ptexNew)->GetSurfaceLevel(iLevel, &psurfSrc);
             hr = ptexCube->GetCubeMapSurface((D3DCUBEMAP_FACES)cubeMapDlg.m_iFace, iLevel, &psurfDest);
-            hr = D3DXLoadSurfaceFromSurface(psurfDest, NULL, NULL, 
-                psurfSrc, NULL, NULL, D3DX_DEFAULT, 0);
+            hr = D3DXLoadSurfaceFromSurface(psurfDest, nullptr, nullptr, 
+                psurfSrc, nullptr, nullptr, D3DX_DEFAULT, 0);
             ReleasePpo(&psurfSrc);
             ReleasePpo(&psurfDest);
         }
@@ -1165,7 +1164,7 @@ void CDxtexDoc::OnFormatChangeCubeMapFaces()
     }
     m_dwCubeMapFlags = DDS_CUBEMAP_ALLFACES;
     SetModifiedFlag();
-    UpdateAllViews(NULL, 1); // tell CView to pick up new surface pointers
+    UpdateAllViews(nullptr, 1); // tell CView to pick up new surface pointers
 }
 
 
@@ -1189,7 +1188,7 @@ void CDxtexDoc::OnFormatMakeIntoVolumeMap()
     // Change m_ptexOrig into a volumemap
     ((LPDIRECT3DTEXTURE9)m_ptexOrig)->GetLevelDesc(0, &sd);
     hr = pd3ddev->CreateVolumeTexture(m_dwWidth, m_dwHeight, numLayers,
-        m_numMips, 0, sd.Format, D3DPOOL_SYSTEMMEM, &ptexVolume, NULL);
+        m_numMips, 0, sd.Format, D3DPOOL_SYSTEMMEM, &ptexVolume, nullptr);
     if (FAILED(hr))
     {
         if( E_OUTOFMEMORY == hr )
@@ -1210,11 +1209,11 @@ void CDxtexDoc::OnFormatMakeIntoVolumeMap()
     m_ptexOrig = ptexVolume;
 
     // Change m_ptexNew into a volumemap too
-    if (m_ptexNew != NULL)
+    if (m_ptexNew != nullptr)
     {
         ((LPDIRECT3DTEXTURE9)m_ptexNew)->GetLevelDesc(0, &sd);
         hr = pd3ddev->CreateVolumeTexture(m_dwWidth, m_dwHeight, numLayers,
-            m_numMips, 0, sd.Format, D3DPOOL_SYSTEMMEM, &ptexVolume, NULL);
+            m_numMips, 0, sd.Format, D3DPOOL_SYSTEMMEM, &ptexVolume, nullptr);
         if (FAILED(hr))
             return;
         for (iLevel = 0; iLevel < m_numMips; iLevel++)
@@ -1230,7 +1229,7 @@ void CDxtexDoc::OnFormatMakeIntoVolumeMap()
     }
     m_dwDepth = numLayers;
     SetModifiedFlag();
-    UpdateAllViews(NULL, 1); // tell CView to pick up new surface pointers
+    UpdateAllViews(nullptr, 1); // tell CView to pick up new surface pointers
 }
 
 
@@ -1260,12 +1259,12 @@ HRESULT CDxtexDoc::LoadVolumeSliceFromSurface(LPDIRECT3DVOLUME9 pVolume, UINT iS
     boxDest.Front = iSlice;
     boxDest.Back = iSlice + 1;
 
-    hr = psurf->LockRect(&lr, NULL, 0);
+    hr = psurf->LockRect(&lr, nullptr, 0);
     if (FAILED(hr))
         return hr;
 
-    hr = D3DXLoadVolumeFromMemory(pVolume, NULL, &boxDest, lr.pBits, sd.Format, lr.Pitch, 
-        0, NULL, &boxSrc, D3DX_DEFAULT, 0);
+    hr = D3DXLoadVolumeFromMemory(pVolume, nullptr, &boxDest, lr.pBits, sd.Format, lr.Pitch, 
+        0, nullptr, &boxSrc, D3DX_DEFAULT, 0);
 
     psurf->UnlockRect();
 
@@ -1299,8 +1298,8 @@ HRESULT CDxtexDoc::LoadSurfaceFromVolumeSlice(LPDIRECT3DVOLUME9 pVolume, UINT iS
     if (FAILED(hr))
         return hr;
 
-    hr = D3DXLoadSurfaceFromMemory(psurf, NULL, NULL, lb.pBits, vd.Format, lb.RowPitch, 
-        NULL, &rc, D3DX_DEFAULT, 0);
+    hr = D3DXLoadSurfaceFromMemory(psurf, nullptr, nullptr, lb.pBits, vd.Format, lb.RowPitch, 
+        nullptr, &rc, D3DX_DEFAULT, 0);
 
     pVolume->UnlockBox();
 
@@ -1312,12 +1311,12 @@ HRESULT CDxtexDoc::BltAllLevels(D3DCUBEMAP_FACES FaceType,
     LPDIRECT3DBASETEXTURE9 ptexSrc, LPDIRECT3DBASETEXTURE9 ptexDest)
 {
     HRESULT hr;
-    LPDIRECT3DTEXTURE9 pmiptexSrc;
-    LPDIRECT3DTEXTURE9 pmiptexDest;
-    LPDIRECT3DCUBETEXTURE9 pcubetexSrc;
-    LPDIRECT3DCUBETEXTURE9 pcubetexDest;
-    LPDIRECT3DVOLUMETEXTURE9 pvoltexSrc;
-    LPDIRECT3DVOLUMETEXTURE9 pvoltexDest;
+    LPDIRECT3DTEXTURE9 pmiptexSrc = nullptr;
+    LPDIRECT3DTEXTURE9 pmiptexDest = nullptr;
+    LPDIRECT3DCUBETEXTURE9 pcubetexSrc = nullptr;
+    LPDIRECT3DCUBETEXTURE9 pcubetexDest = nullptr;
+    LPDIRECT3DVOLUMETEXTURE9 pvoltexSrc = nullptr;
+    LPDIRECT3DVOLUMETEXTURE9 pvoltexDest = nullptr;
     DWORD iLevel;
 
     if (IsVolumeMap())
@@ -1340,34 +1339,34 @@ HRESULT CDxtexDoc::BltAllLevels(D3DCUBEMAP_FACES FaceType,
     {
         if (IsVolumeMap())
         {
-            LPDIRECT3DVOLUME9 pvolSrc = NULL;
-            LPDIRECT3DVOLUME9 pvolDest = NULL;
+            LPDIRECT3DVOLUME9 pvolSrc = nullptr;
+            LPDIRECT3DVOLUME9 pvolDest = nullptr;
             hr = pvoltexSrc->GetVolumeLevel(iLevel, &pvolSrc);
             hr = pvoltexDest->GetVolumeLevel(iLevel, &pvolDest);
-            hr = D3DXLoadVolumeFromVolume(pvolDest, NULL, NULL, 
-                pvolSrc, NULL, NULL, D3DX_DEFAULT, 0);
+            hr = D3DXLoadVolumeFromVolume(pvolDest, nullptr, nullptr, 
+                pvolSrc, nullptr, nullptr, D3DX_DEFAULT, 0);
             ReleasePpo(&pvolSrc);
             ReleasePpo(&pvolDest);
         }
         else if (IsCubeMap())
         {
-            LPDIRECT3DSURFACE9 psurfSrc = NULL;
-            LPDIRECT3DSURFACE9 psurfDest = NULL;
+            LPDIRECT3DSURFACE9 psurfSrc = nullptr;
+            LPDIRECT3DSURFACE9 psurfDest = nullptr;
             hr = pcubetexSrc->GetCubeMapSurface(FaceType, iLevel, &psurfSrc);
             hr = pcubetexDest->GetCubeMapSurface(FaceType, iLevel, &psurfDest);
-            hr = D3DXLoadSurfaceFromSurface(psurfDest, NULL, NULL, 
-                psurfSrc, NULL, NULL, D3DX_DEFAULT, 0);
+            hr = D3DXLoadSurfaceFromSurface(psurfDest, nullptr, nullptr, 
+                psurfSrc, nullptr, nullptr, D3DX_DEFAULT, 0);
             ReleasePpo(&psurfSrc);
             ReleasePpo(&psurfDest);
         }
         else
         {
-            LPDIRECT3DSURFACE9 psurfSrc = NULL;
-            LPDIRECT3DSURFACE9 psurfDest = NULL;
+            LPDIRECT3DSURFACE9 psurfSrc = nullptr;
+            LPDIRECT3DSURFACE9 psurfDest = nullptr;
             hr = pmiptexSrc->GetSurfaceLevel(iLevel, &psurfSrc);
             hr = pmiptexDest->GetSurfaceLevel(iLevel, &psurfDest);
-            hr = D3DXLoadSurfaceFromSurface(psurfDest, NULL, NULL, 
-                psurfSrc, NULL, NULL, D3DX_DEFAULT, 0);
+            hr = D3DXLoadSurfaceFromSurface(psurfDest, nullptr, nullptr, 
+                psurfSrc, nullptr, nullptr, D3DX_DEFAULT, 0);
             ReleasePpo(&psurfSrc);
             ReleasePpo(&psurfDest);
         }
@@ -1384,7 +1383,7 @@ HRESULT CDxtexDoc::Resize(DWORD dwWidthNew, DWORD dwHeightNew)
     LPDIRECT3DDEVICE9 pd3ddev = PDxtexApp()->Pd3ddev();
     
     hr = pd3ddev->CreateTexture(dwWidthNew, dwHeightNew, m_numMips, 
-         0, GetFormat(m_ptexOrig), D3DPOOL_MANAGED, &pmiptexNew, NULL);
+         0, GetFormat(m_ptexOrig), D3DPOOL_MANAGED, &pmiptexNew, nullptr);
     if (FAILED(hr))
         return hr;
     if (FAILED(BltAllLevels(D3DCUBEMAP_FACE_FORCE_DWORD, m_ptexOrig, pmiptexNew)))
@@ -1392,10 +1391,10 @@ HRESULT CDxtexDoc::Resize(DWORD dwWidthNew, DWORD dwHeightNew)
     ReleasePpo(&m_ptexOrig);
     m_ptexOrig = pmiptexNew;
 
-    if( m_ptexNew != NULL )
+    if( m_ptexNew != nullptr )
     {
         hr = pd3ddev->CreateTexture(dwWidthNew, dwHeightNew, m_numMips, 
-             0, GetFormat(m_ptexOrig), D3DPOOL_MANAGED, &pmiptexNew, NULL);
+             0, GetFormat(m_ptexOrig), D3DPOOL_MANAGED, &pmiptexNew, nullptr);
         if (FAILED(hr))
             return hr;
         if (FAILED(BltAllLevels(D3DCUBEMAP_FACE_FORCE_DWORD, m_ptexNew, pmiptexNew)))
@@ -1407,7 +1406,7 @@ HRESULT CDxtexDoc::Resize(DWORD dwWidthNew, DWORD dwHeightNew)
     m_dwWidth = dwWidthNew;
     m_dwHeight = dwHeightNew;
     SetModifiedFlag(TRUE);
-    UpdateAllViews(NULL, 4);
+    UpdateAllViews(nullptr, 4);
 
     return S_OK;
 }
@@ -1417,20 +1416,20 @@ void CDxtexDoc::OpenCubeFace(D3DCUBEMAP_FACES FaceType)
 {
     HRESULT hr;
     CString fileName;
-    LPDIRECT3DSURFACE9 psurfOrig = NULL;
-    LPDIRECT3DSURFACE9 psurfNew = NULL;
+    LPDIRECT3DSURFACE9 psurfOrig = nullptr;
+    LPDIRECT3DSURFACE9 psurfNew = nullptr;
 
     if (!IsCubeMap())
         return;
 
     hr = ((LPDIRECT3DCUBETEXTURE9)m_ptexOrig)->GetCubeMapSurface(FaceType, 0, &psurfOrig);
-    if (m_ptexNew != NULL)
+    if (m_ptexNew != nullptr)
         hr = ((LPDIRECT3DCUBETEXTURE9)m_ptexNew)->GetCubeMapSurface(FaceType, 0, &psurfNew);
 
     if (!PromptForBmp(&fileName))
         return;
 
-    hr = D3DXLoadSurfaceFromFile(psurfOrig, NULL, NULL, fileName, NULL, D3DX_DEFAULT, 0, NULL);
+    hr = D3DXLoadSurfaceFromFile(psurfOrig, nullptr, nullptr, fileName, nullptr, D3DX_DEFAULT, 0, nullptr);
 
     // Look for "foo_a.bmp" for alpha channel
     int i = fileName.ReverseFind('.');
@@ -1444,17 +1443,17 @@ void CDxtexDoc::OpenCubeFace(D3DCUBEMAP_FACES FaceType)
 
     if (m_numMips > 1)
     {
-        hr = D3DXFilterCubeTexture((LPDIRECT3DCUBETEXTURE9)m_ptexOrig, NULL, 0, D3DX_DEFAULT);
+        hr = D3DXFilterCubeTexture((LPDIRECT3DCUBETEXTURE9)m_ptexOrig, nullptr, 0, D3DX_DEFAULT);
     }
 
 
-    if (psurfNew != NULL)
+    if (psurfNew != nullptr)
     {
-        hr = D3DXLoadSurfaceFromSurface(psurfNew, NULL, NULL, psurfOrig, NULL, NULL, D3DX_DEFAULT, 0);
+        hr = D3DXLoadSurfaceFromSurface(psurfNew, nullptr, nullptr, psurfOrig, nullptr, nullptr, D3DX_DEFAULT, 0);
 
         if (m_numMips > 1)
         {
-            hr = D3DXFilterCubeTexture((LPDIRECT3DCUBETEXTURE9)m_ptexNew, NULL, 0, D3DX_DEFAULT);
+            hr = D3DXFilterCubeTexture((LPDIRECT3DCUBETEXTURE9)m_ptexNew, nullptr, 0, D3DX_DEFAULT);
         }
     }
 
@@ -1462,7 +1461,7 @@ void CDxtexDoc::OpenCubeFace(D3DCUBEMAP_FACES FaceType)
     ReleasePpo(&psurfNew);
 
     SetModifiedFlag(TRUE);
-    UpdateAllViews(NULL, 1);
+    UpdateAllViews(nullptr, 1);
 }
 
 
@@ -1470,8 +1469,8 @@ void CDxtexDoc::OpenAlphaCubeFace(D3DCUBEMAP_FACES FaceType)
 {
     HRESULT hr;
     CString fileName;
-    LPDIRECT3DSURFACE9 psurfOrig = NULL;
-    LPDIRECT3DSURFACE9 psurfNew = NULL;
+    LPDIRECT3DSURFACE9 psurfOrig = nullptr;
+    LPDIRECT3DSURFACE9 psurfNew = nullptr;
     D3DSURFACE_DESC sd;
 
     if (!IsCubeMap())
@@ -1484,7 +1483,7 @@ void CDxtexDoc::OpenAlphaCubeFace(D3DCUBEMAP_FACES FaceType)
         AfxMessageBox(ID_ERROR_PREMULTALPHA);
         return;
     }
-    if (m_ptexNew != NULL)
+    if (m_ptexNew != nullptr)
     {
         hr = ((LPDIRECT3DCUBETEXTURE9)m_ptexNew)->GetCubeMapSurface(FaceType, 0, &psurfNew);
     }
@@ -1495,7 +1494,7 @@ void CDxtexDoc::OpenAlphaCubeFace(D3DCUBEMAP_FACES FaceType)
     if (FAILED(hr = LoadAlphaIntoSurface(fileName, psurfOrig)))
         return;
 
-    if (psurfNew != NULL)
+    if (psurfNew != nullptr)
     {
         if (FAILED(hr = LoadAlphaIntoSurface(fileName, psurfNew)))
             return;
@@ -1503,17 +1502,17 @@ void CDxtexDoc::OpenAlphaCubeFace(D3DCUBEMAP_FACES FaceType)
 
     if (m_numMips > 1)
     {
-        hr = D3DXFilterCubeTexture((LPDIRECT3DCUBETEXTURE9)m_ptexOrig, NULL, 0, D3DX_DEFAULT);
+        hr = D3DXFilterCubeTexture((LPDIRECT3DCUBETEXTURE9)m_ptexOrig, nullptr, 0, D3DX_DEFAULT);
     }
 
 
-    if (psurfNew != NULL)
+    if (psurfNew != nullptr)
     {
-        hr = D3DXLoadSurfaceFromSurface(psurfNew, NULL, NULL, psurfOrig, NULL, NULL, D3DX_DEFAULT, 0);
+        hr = D3DXLoadSurfaceFromSurface(psurfNew, nullptr, nullptr, psurfOrig, nullptr, nullptr, D3DX_DEFAULT, 0);
 
         if (m_numMips > 1)
         {
-            hr = D3DXFilterCubeTexture((LPDIRECT3DCUBETEXTURE9)m_ptexNew, NULL, 0, D3DX_DEFAULT);
+            hr = D3DXFilterCubeTexture((LPDIRECT3DCUBETEXTURE9)m_ptexNew, nullptr, 0, D3DX_DEFAULT);
         }
     }
 
@@ -1521,7 +1520,7 @@ void CDxtexDoc::OpenAlphaCubeFace(D3DCUBEMAP_FACES FaceType)
     ReleasePpo(&psurfNew);
 
     SetModifiedFlag(TRUE);
-    UpdateAllViews(NULL, 1);
+    UpdateAllViews(nullptr, 1);
 }
 
 
@@ -1542,7 +1541,7 @@ void CDxtexDoc::OnFormatChangeSurfaceFmt()
     CChangeFmtDlg changeFmtDlg;
     LPDIRECT3DBASETEXTURE9 ptex;
 
-    ptex = (m_ptexNew == NULL ? m_ptexOrig : m_ptexNew);
+    ptex = (m_ptexNew == nullptr ? m_ptexOrig : m_ptexNew);
 
     if (IsVolumeMap())
     {

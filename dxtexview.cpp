@@ -119,17 +119,21 @@ static UINT GetVolumeSize(D3DVOLUME_DESC* pDesc)
 }
 
 
-CDxtexView::CDxtexView()
+CDxtexView::CDxtexView() :
+    m_pVB(nullptr),
+    m_ptexCur(nullptr),
+    m_pSwapChain(nullptr),
+    m_rcSrc{},
+    m_rcDest{},
+    m_fZoom(1.f),
+    m_bViewOrig(TRUE),
+    m_bViewAlpha(FALSE),
+    m_bTitleModsChanged(TRUE),
+    m_lwMipCur(0),
+    m_CubeFaceCur(D3DCUBEMAP_FACE_FORCE_DWORD),
+    m_lwSliceCur(-1),
+    m_dwClearColor{}
 {
-    m_pVB = NULL;
-    m_ptexCur = NULL;
-    m_pSwapChain = NULL;
-    m_lwMipCur = 0;
-    m_CubeFaceCur = D3DCUBEMAP_FACE_FORCE_DWORD;
-    m_lwSliceCur = -1;
-    m_fZoom = 1.0f;
-    m_bViewOrig = TRUE;
-    m_bViewAlpha = FALSE;
 }
 
 
@@ -146,11 +150,11 @@ void CDxtexView::CheckScrollBars(BOOL& bHasHorzBar, BOOL& bHasVertBar) const
 {
     DWORD dwStyle = GetStyle();
     CScrollBar* pBar = GetScrollBarCtrl(SB_VERT);
-    bHasVertBar = ((pBar != NULL) && pBar->IsWindowEnabled()) ||
+    bHasVertBar = ((pBar != nullptr) && pBar->IsWindowEnabled()) ||
                     (dwStyle & WS_VSCROLL);
 
     pBar = GetScrollBarCtrl(SB_HORZ);
-    bHasHorzBar = ((pBar != NULL) && pBar->IsWindowEnabled()) ||
+    bHasHorzBar = ((pBar != nullptr) && pBar->IsWindowEnabled()) ||
                     (dwStyle & WS_HSCROLL);
 }
 
@@ -170,11 +174,11 @@ void CDxtexView::OnDraw(CDC* pDC)
     rcDest.OffsetRect(pDC->GetViewportOrg());
 
     // REVIEW: only update dirty region?
-    if (m_pSwapChain != NULL)
+    if (m_pSwapChain != nullptr)
     {
         if( PDxtexApp()->HandlePossibleLostDevice() )
         {
-            hr = m_pSwapChain->Present(&rcSrc, &rcDest, GetSafeHwnd(), NULL, 0);
+            hr = m_pSwapChain->Present(&rcSrc, &rcDest, GetSafeHwnd(), nullptr, 0);
             if( hr == D3DERR_DEVICELOST )
             {
                 PDxtexApp()->DeviceIsLost();
@@ -201,7 +205,7 @@ void CDxtexView::Dump(CDumpContext& dc) const
 CDxtexDoc* CDxtexView::GetDocument() // non-debug version is inline
 {
     ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CDxtexDoc)));
-    return (CDxtexDoc*)m_pDocument;
+    return reinterpret_cast<CDxtexDoc*>(m_pDocument);
 }
 #endif //_DEBUG
 
@@ -246,7 +250,7 @@ void CDxtexView::OnInitialUpdate()
 }
 
 
-VOID CDxtexView::GetImageInfo(CString& strInfo)
+void CDxtexView::GetImageInfo(CString& strInfo)
 {
     LPDIRECT3DBASETEXTURE9 ptex;
     D3DSURFACE_DESC sd;
@@ -326,8 +330,8 @@ VOID CDxtexView::GetImageInfo(CString& strInfo)
 DWORD CDxtexView::NumBytesInSurfaces(D3DCUBEMAP_FACES FaceType, LPDIRECT3DBASETEXTURE9 ptex)
 {
     DWORD dwBytes = 0;
-    LPDIRECT3DTEXTURE9 pmiptex = NULL;
-    LPDIRECT3DCUBETEXTURE9 pcubetex = NULL;
+    LPDIRECT3DTEXTURE9 pmiptex = nullptr;
+    LPDIRECT3DCUBETEXTURE9 pcubetex = nullptr;
     D3DSURFACE_DESC sd;
     DWORD iLevel;
 
@@ -338,7 +342,7 @@ DWORD CDxtexView::NumBytesInSurfaces(D3DCUBEMAP_FACES FaceType, LPDIRECT3DBASETE
 
     for (iLevel = 0; iLevel < GetDocument()->NumMips(); iLevel++)
     {
-        if (pmiptex != NULL)
+        if (pmiptex != nullptr)
             pmiptex->GetLevelDesc(iLevel, &sd);
         else
             pcubetex->GetLevelDesc(iLevel, &sd);
@@ -349,7 +353,7 @@ DWORD CDxtexView::NumBytesInSurfaces(D3DCUBEMAP_FACES FaceType, LPDIRECT3DBASETE
 }
 
 
-HRESULT CDxtexView::UpdateDevice(VOID)
+HRESULT CDxtexView::UpdateDevice()
 {
     HRESULT hr;
     LPDIRECT3D9 pd3d = PDxtexApp()->Pd3d();
@@ -377,13 +381,13 @@ HRESULT CDxtexView::UpdateDevice(VOID)
     return S_OK;
 }
 
-HRESULT CDxtexView::InvalidateDeviceObjects(VOID)
+HRESULT CDxtexView::InvalidateDeviceObjects()
 {
     ReleasePpo( &m_pSwapChain );
     return S_OK;
 }
 
-HRESULT CDxtexView::RestoreDeviceObjects(VOID)
+HRESULT CDxtexView::RestoreDeviceObjects()
 {
     UpdateDevice();
     RenderScene();
@@ -391,14 +395,14 @@ HRESULT CDxtexView::RestoreDeviceObjects(VOID)
     return S_OK;
 }
 
-HRESULT CDxtexView::CreateVertexBuffer(VOID)
+HRESULT CDxtexView::CreateVertexBuffer()
 {
     LPDIRECT3DDEVICE9 pd3ddev = PDxtexApp()->Pd3ddev();
 
     // Create the the vertex buffer
     if( FAILED( pd3ddev->CreateVertexBuffer( 6 * sizeof(CUSTOMVERTEX),
         0 /* Usage */, D3DFVF_CUSTOMVERTEX, 
-        D3DPOOL_MANAGED, &m_pVB, NULL ) ) )
+        D3DPOOL_MANAGED, &m_pVB, nullptr ) ) )
     {
         return E_FAIL;
     }
@@ -407,7 +411,7 @@ HRESULT CDxtexView::CreateVertexBuffer(VOID)
 }
 
 
-HRESULT CDxtexView::RenderScene(VOID)
+HRESULT CDxtexView::RenderScene()
 {
     CWaitCursor waitCursor;
     HRESULT hr;
@@ -415,7 +419,7 @@ HRESULT CDxtexView::RenderScene(VOID)
 
     LPDIRECT3DSURFACE9 psurf;
 
-    if (m_pSwapChain == NULL)
+    if (m_pSwapChain == nullptr)
         return E_FAIL;
 
     // Vertices for our quad
@@ -432,7 +436,7 @@ HRESULT CDxtexView::RenderScene(VOID)
     };
 
     // Copy the global vertex data into the vertex buffer
-    VOID* pVertices;
+    void* pVertices;
     if( FAILED( m_pVB->Lock( 0, sizeof(vertexArray), (void**)&pVertices, 0 ) ) )
         return E_FAIL;
     memcpy( pVertices, vertexArray, sizeof(vertexArray) );
@@ -444,7 +448,7 @@ HRESULT CDxtexView::RenderScene(VOID)
 
     ReleasePpo(&psurf);
 
-    hr = pd3ddev->Clear(0, NULL, D3DCLEAR_TARGET, m_dwClearColor, 0.0f, 0);
+    hr = pd3ddev->Clear(0, nullptr, D3DCLEAR_TARGET, m_dwClearColor, 0.0f, 0);
 
     hr = pd3ddev->BeginScene();
 
@@ -470,7 +474,7 @@ HRESULT CDxtexView::RenderScene(VOID)
     pd3ddev->SetStreamSource( 0, m_pVB, 0, sizeof(CUSTOMVERTEX) );
     pd3ddev->SetFVF( D3DFVF_CUSTOMVERTEX );
     pd3ddev->DrawPrimitive( D3DPT_TRIANGLELIST, 0, 2 );
-    pd3ddev->SetTexture(0, NULL);
+    pd3ddev->SetTexture(0, nullptr);
 
     hr = pd3ddev->EndScene();
 
@@ -480,7 +484,7 @@ HRESULT CDxtexView::RenderScene(VOID)
 
 void CDxtexView::OnViewOriginal()
 {
-    if (GetDocument()->PtexOrig() == NULL)
+    if (GetDocument()->PtexOrig() == nullptr)
         return;
     BuildViewSurface(TRUE, m_CubeFaceCur, m_lwSliceCur, m_lwMipCur, m_bViewAlpha);
     RenderScene();
@@ -491,7 +495,7 @@ void CDxtexView::OnViewOriginal()
 
 void CDxtexView::OnViewCompressed()
 {
-    if (GetDocument()->PtexNew() == NULL)
+    if (GetDocument()->PtexNew() == nullptr)
         return;
     BuildViewSurface(FALSE, m_CubeFaceCur, m_lwSliceCur, m_lwMipCur, m_bViewAlpha);
     RenderScene();
@@ -502,7 +506,7 @@ void CDxtexView::OnViewCompressed()
 
 void CDxtexView::OnUpdateViewOriginal(CCmdUI* pCmdUI)
 {
-    if (GetDocument()->PtexOrig() == NULL)
+    if (GetDocument()->PtexOrig() == nullptr)
     {
         pCmdUI->Enable(FALSE);
         pCmdUI->SetCheck(0);
@@ -517,7 +521,7 @@ void CDxtexView::OnUpdateViewOriginal(CCmdUI* pCmdUI)
 
 void CDxtexView::OnUpdateViewCompressed(CCmdUI* pCmdUI)
 {
-    if (GetDocument()->PtexNew() == NULL)
+    if (GetDocument()->PtexNew() == nullptr)
     {
         pCmdUI->Enable(FALSE);
         pCmdUI->SetCheck(0);
@@ -588,7 +592,7 @@ void CDxtexView::OnViewLargerMipLevel()
 }
 
 
-void CDxtexView::OnViewAlphaChannel(VOID)
+void CDxtexView::OnViewAlphaChannel()
 {
     BuildViewSurface(m_bViewOrig, m_CubeFaceCur, m_lwSliceCur, m_lwMipCur, !m_bViewAlpha);
     RenderScene();
@@ -696,7 +700,7 @@ void CDxtexView::OnUpdateViewZoomOut(CCmdUI* pCmdUI)
 }
 
 
-CString CDxtexView::GetStrTitleMods(VOID)
+CString CDxtexView::GetStrTitleMods()
 {
     CString strTitleMods;
     strTitleMods = "(";
@@ -823,10 +827,10 @@ void CDxtexView::OnViewChangeBackgroundColor()
         CDocTemplate* pDocTemplate = PDxtexApp()->GetNextDocTemplate(posTemp);
         CDocument* pdoc;
         POSITION pos = pDocTemplate->GetFirstDocPosition();
-        while (pos != NULL)
+        while (pos != nullptr)
         {
             pdoc = pDocTemplate->GetNextDoc(pos);
-            pdoc->UpdateAllViews(NULL, 2);
+            pdoc->UpdateAllViews(nullptr, 2);
         }
     }
 }
@@ -901,15 +905,15 @@ HRESULT CDxtexView::BuildViewSurface(BOOL bOrig, D3DCUBEMAP_FACES FaceType, LONG
     }
 
     hr = pd3ddev->CreateTexture(sd.Width, sd.Height, 1,
-         0 /* Usage */, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &m_ptexCur, NULL);
+         0 /* Usage */, D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &m_ptexCur, nullptr);
     if (FAILED(hr))
         return hr;
 
     m_rcSrc.SetRect(0, 0, sd.Width, sd.Height);
     m_rcDest.SetRect(0, 0, (INT)(sd.Width * m_fZoom), (INT)(sd.Height * m_fZoom));
 
-    LPDIRECT3DSURFACE9 psurfSrc = NULL;
-    LPDIRECT3DSURFACE9 psurfDest = NULL;
+    LPDIRECT3DSURFACE9 psurfSrc = nullptr;
+    LPDIRECT3DSURFACE9 psurfDest = nullptr;
 
     hr = m_ptexCur->GetSurfaceLevel(0, &psurfDest);
 
@@ -923,13 +927,13 @@ HRESULT CDxtexView::BuildViewSurface(BOOL bOrig, D3DCUBEMAP_FACES FaceType, LONG
     else if (!bIsCubeMap)
     {
         hr = ((LPDIRECT3DTEXTURE9)ptex)->GetSurfaceLevel(m_lwMipCur, &psurfSrc);
-        hr = D3DXLoadSurfaceFromSurface(psurfDest, NULL, NULL, psurfSrc, NULL, NULL,
+        hr = D3DXLoadSurfaceFromSurface(psurfDest, nullptr, nullptr, psurfSrc, nullptr, nullptr,
             D3DX_FILTER_TRIANGLE, 0);
     }
     else
     {
         hr = ((LPDIRECT3DCUBETEXTURE9)ptex)->GetCubeMapSurface(FaceType, m_lwMipCur, &psurfSrc);
-        hr = D3DXLoadSurfaceFromSurface(psurfDest, NULL, NULL, psurfSrc, NULL, NULL,
+        hr = D3DXLoadSurfaceFromSurface(psurfDest, nullptr, nullptr, psurfSrc, nullptr, nullptr,
             D3DX_FILTER_TRIANGLE, 0);
     }
 
@@ -939,14 +943,13 @@ HRESULT CDxtexView::BuildViewSurface(BOOL bOrig, D3DCUBEMAP_FACES FaceType, LONG
         // Move alpha channels into RGB (and set alpha to 0xff)
         D3DLOCKED_RECT lr;
 
-        hr = psurfDest->LockRect(&lr, NULL, 0);
+        hr = psurfDest->LockRect(&lr, nullptr, 0);
 
         DWORD xp;
         DWORD yp;
-        DWORD* pdwRow = (DWORD*)lr.pBits;
+        auto pdwRow = static_cast<DWORD*>(lr.pBits);
         DWORD* pdw;
         DWORD dwAlpha;
-        LONG dataBytesPerRow = 4 * sd.Width;
 
         for (yp = 0; yp < sd.Height; yp++)
         {
@@ -995,8 +998,8 @@ HRESULT CDxtexView::LoadSurfaceFromVolumeSlice(LPDIRECT3DVOLUME9 pVolume, UINT i
     if (FAILED(hr))
         return hr;
 
-    hr = D3DXLoadSurfaceFromMemory(psurf, NULL, NULL, lb.pBits, vd.Format, lb.RowPitch,
-        NULL, &rc, D3DX_FILTER_TRIANGLE, 0);
+    hr = D3DXLoadSurfaceFromMemory(psurf, nullptr, nullptr, lb.pBits, vd.Format, lb.RowPitch,
+        nullptr, &rc, D3DX_FILTER_TRIANGLE, 0);
 
     pVolume->UnlockBox();
 

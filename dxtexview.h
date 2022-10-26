@@ -38,12 +38,12 @@ public:
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
-	BOOL TitleModsChanged(VOID) { return m_bTitleModsChanged; }
-	VOID ClearTitleModsChanged(VOID) { m_bTitleModsChanged = FALSE; }
-	CString GetStrTitleMods(VOID);
-	VOID GetImageInfo(CString& strInfo);
-    HRESULT InvalidateDeviceObjects(VOID);
-    HRESULT RestoreDeviceObjects(VOID);
+	BOOL TitleModsChanged() const noexcept { return m_bTitleModsChanged; }
+	void ClearTitleModsChanged() noexcept { m_bTitleModsChanged = FALSE; }
+	CString GetStrTitleMods();
+	void GetImageInfo(CString& strInfo);
+    HRESULT InvalidateDeviceObjects();
+    HRESULT RestoreDeviceObjects();
 
 // Generated message map functions
 protected:
@@ -92,14 +92,14 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	HRESULT UpdateDevice(VOID);
-	HRESULT RenderScene(VOID);
-	CDxtexApp* PDxtexApp(VOID) { return (CDxtexApp*)AfxGetApp(); }
+	HRESULT UpdateDevice();
+	HRESULT RenderScene();
+	CDxtexApp* PDxtexApp() const noexcept { return reinterpret_cast<CDxtexApp*>(AfxGetApp()); }
 	HRESULT BuildViewSurface(BOOL bOrig, D3DCUBEMAP_FACES FaceType, LONG lwSlice, LONG lwMip, BOOL bViewAlpha);
 	HRESULT LoadSurfaceFromVolumeSlice(LPDIRECT3DVOLUME9 pVolume, UINT iSlice, LPDIRECT3DSURFACE9 psurf);
 
 	DWORD NumBytesInSurfaces(D3DCUBEMAP_FACES FaceType, LPDIRECT3DBASETEXTURE9 ptex);
-	HRESULT CreateVertexBuffer(VOID);
+	HRESULT CreateVertexBuffer();
 	CString FormatName(D3DFORMAT fmt);
 
     void Zoom(float zoomfactor);
@@ -120,8 +120,8 @@ private:
 };
 
 #ifndef _DEBUG  // debug version in dxtexView.cpp
-inline CDxtexDoc* CDxtexView::GetDocument()
-   { return (CDxtexDoc*)m_pDocument; }
+inline CDxtexDoc* CDxtexView::GetDocument() const noexcept
+   { return reinterpret_cast<CDxtexDoc*>(m_pDocument); }
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

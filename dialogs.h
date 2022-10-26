@@ -16,7 +16,7 @@ class CNewTextureDlg : public CDialog
 {
 // Construction
 public:
-    CNewTextureDlg(CWnd* pParent = NULL);   // standard constructor
+    CNewTextureDlg(CWnd* pParent = nullptr);   // standard constructor
 
     void SetMaxTextureSize( int dwWidth, int dwHeight ) { m_dwMaxWidth = dwWidth; m_dwMaxHeight = dwHeight; }
 
@@ -65,7 +65,7 @@ class CCubeMapDlg : public CDialog
 {
 // Construction
 public:
-    CCubeMapDlg(CWnd* pParent = NULL);   // standard constructor
+    CCubeMapDlg(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
     //{{AFX_DATA(CCubeMapDlg)
@@ -98,7 +98,7 @@ class CVolumeMapDlg : public CDialog
 {
 // Construction
 public:
-    CVolumeMapDlg(CWnd* pParent = NULL);   // standard constructor
+    CVolumeMapDlg(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
     //{{AFX_DATA(CVolumeMapDlg)
@@ -132,7 +132,7 @@ class CChangeFmtDlg : public CDialog
 {
 // Construction
 public:
-    CChangeFmtDlg(CWnd* pParent = NULL);   // standard constructor
+    CChangeFmtDlg(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
     //{{AFX_DATA(CChangeFmtDlg)
@@ -171,7 +171,7 @@ class CResizeDialog : public CDialog
 {
 // Construction
 public:
-	CResizeDialog(CWnd* pParent = NULL);   // standard constructor
+	CResizeDialog(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CResizeDialog)

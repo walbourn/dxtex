@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 // CNewTextureDlg dialog
 
 
-CNewTextureDlg::CNewTextureDlg(CWnd* pParent /*=NULL*/)
+CNewTextureDlg::CNewTextureDlg(CWnd* pParent /*=nullptr*/)
     : CDialog(CNewTextureDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CNewTextureDlg)
@@ -79,7 +79,7 @@ BOOL CNewTextureDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
     
-    CComboBox *pComboBox = (CComboBox*) GetDlgItem(IDC_D3DFMT_COMBO);
+    auto pComboBox = reinterpret_cast<CComboBox*>(GetDlgItem(IDC_D3DFMT_COMBO));
     TCHAR strFmtLabel[MAX_PATH] = {0}; 
     
     for( int i = 0; i < fmtInfoArraySize; i++ )
@@ -154,7 +154,7 @@ void CNewTextureDlg::OnOK()
 // CCubeMapDlg dialog
 
 
-CCubeMapDlg::CCubeMapDlg(CWnd* pParent /*=NULL*/)
+CCubeMapDlg::CCubeMapDlg(CWnd* pParent /*=nullptr*/)
     : CDialog(CCubeMapDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CCubeMapDlg)
@@ -183,7 +183,7 @@ END_MESSAGE_MAP()
 // CVolumeMapDlg dialog
 
 
-CVolumeMapDlg::CVolumeMapDlg(CWnd* pParent /*=NULL*/)
+CVolumeMapDlg::CVolumeMapDlg(CWnd* pParent /*=nullptr*/)
     : CDialog(CVolumeMapDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CVolumeMapDlg)
@@ -215,7 +215,7 @@ END_MESSAGE_MAP()
 // CChangeFmtDlg dialog
 
 
-CChangeFmtDlg::CChangeFmtDlg(CWnd* pParent /*=NULL*/)
+CChangeFmtDlg::CChangeFmtDlg(CWnd* pParent /*=nullptr*/)
     : CDialog(CChangeFmtDlg::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CChangeFmtDlg)
@@ -250,8 +250,8 @@ BOOL CChangeFmtDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
-    CComboBox *pComboBox = (CComboBox*) GetDlgItem(IDC_D3DFMT_COMBO);
-    TCHAR strFmtLabel[MAX_PATH] = {0}; 
+    auto pComboBox = reinterpret_cast<CComboBox*>(GetDlgItem(IDC_D3DFMT_COMBO));
+    TCHAR strFmtLabel[MAX_PATH] = {0};
         
     for( int i = 0; i < fmtInfoArraySize; i++ )
     {
@@ -296,7 +296,7 @@ void CChangeFmtDlg::UpdateFmtDesc()
 // CResizeDialog dialog
 
 
-CResizeDialog::CResizeDialog(CWnd* pParent /*=NULL*/)
+CResizeDialog::CResizeDialog(CWnd* pParent /*=nullptr*/)
 	: CDialog(CResizeDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CResizeDialog)

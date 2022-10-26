@@ -106,12 +106,12 @@ void CMainFrame::OnUpdateImageInfo(CCmdUI *pCmdUI)
 	CString strInfo;
 
 	// Get the active MDI child window.
-	CMDIChildWnd *pChild = (CMDIChildWnd *)GetActiveFrame();
+	auto pChild = reinterpret_cast<CMDIChildWnd *>(GetActiveFrame());
 
-	if (pChild != NULL && pChild != (CMDIChildWnd *)this)
+	if (pChild != nullptr && pChild != reinterpret_cast<CMDIChildWnd *>(this))
 	{
 		// Get the active view attached to the active MDI child window.
-		CDxtexView* pView = (CDxtexView*)pChild->GetActiveView();
+		auto pView = reinterpret_cast<CDxtexView*>(pChild->GetActiveView());
 		pView->GetImageInfo(strInfo);
 		pCmdUI->Enable(); 
 		pCmdUI->SetText(strInfo);

@@ -85,12 +85,12 @@ BOOL CChildFrame::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dw
 
 
 // Handle WM_IDLEUPDATECMDUI to update modified indicator if necessary.
-LRESULT CChildFrame::OnIdleUpdateCmdUI(WPARAM wParam, LPARAM)
+LRESULT CChildFrame::OnIdleUpdateCmdUI(WPARAM /*wParam*/, LPARAM)
 {
 	// Only update the title if the doc or view state has changed.
 	// Otherwise, the title bar will flicker.
-	CDxtexDoc* pDoc = (CDxtexDoc*)GetActiveDocument();
-	CDxtexView* pView = (CDxtexView*)GetActiveView();
+	auto pDoc = reinterpret_cast<CDxtexDoc*>(GetActiveDocument());
+	auto pView = reinterpret_cast<CDxtexView*>(GetActiveView());
 	if (pView->TitleModsChanged() || pDoc->TitleModsChanged())
 	{
 		// This will force MFC to call CChildFrame::OnUpdateTitleFrame:
@@ -108,8 +108,8 @@ LRESULT CChildFrame::OnIdleUpdateCmdUI(WPARAM wParam, LPARAM)
 void CChildFrame::OnUpdateFrameTitle(BOOL bAddToTitle)
 {
 	CMDIChildWnd::OnUpdateFrameTitle(bAddToTitle);
-	CDxtexView* pView = (CDxtexView*)GetActiveView();
-	{
+    auto pView = reinterpret_cast<CDxtexView*>(GetActiveView());
+    {
 		CString title;
 		GetWindowText(title);
 		title += " " + pView->GetStrTitleMods();
