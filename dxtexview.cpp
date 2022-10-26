@@ -202,7 +202,7 @@ void CDxtexView::Dump(CDumpContext& dc) const
 }
 
 
-CDxtexDoc* CDxtexView::GetDocument() // non-debug version is inline
+CDxtexDoc* CDxtexView::GetDocument() const noexcept // non-debug version is inline
 {
     ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CDxtexDoc)));
     return reinterpret_cast<CDxtexDoc*>(m_pDocument);

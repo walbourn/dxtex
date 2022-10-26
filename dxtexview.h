@@ -14,7 +14,7 @@ class CDxtexView : public CScrollView
 protected: // create from serialization only
     CDxtexView();
     DECLARE_DYNCREATE(CDxtexView)
-    CDxtexDoc* GetDocument();
+    CDxtexDoc* GetDocument() const noexcept;
 
     void CheckScrollBars(BOOL& bHasHorzBar, BOOL& bHasVertBar) const;
 
