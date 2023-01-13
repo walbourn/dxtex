@@ -1,0 +1,78 @@
+# Copyright (c) Microsoft Corporation.
+# Licensed under the MIT License.
+#
+# https://github.com/walbourn/dxtex
+
+schedules:
+- cron: "0 2 * * *"
+  displayName: 'Nightly build'
+  branches:
+    include:
+    - main
+
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: refs/heads/main
+    trigger:
+      branches:
+        include:
+        - main
+      paths:
+        exclude:
+        - README.md
+
+name: $(Year:yyyy).$(Month).$(DayOfMonth)$(Rev:.r)
+
+variables:
+  GUID_FEED: $(ADOFeedGUID)
+
+pool:
+  vmImage: windows-2019
+
+jobs:
+- job: DESKTOP_BUILD
+  displayName: 'Win32 Desktop'
+  timeoutInMinutes: 60
+  cancelTimeoutInMinutes: 1
+  steps:
+  - checkout: self
+    clean: true
+    fetchTags: false
+  - task: NuGetToolInstaller@1
+    displayName: 'Use NuGet'
+  - task: NuGetCommand@2
+    displayName: NuGet restore
+    inputs:
+      solution: dxtex_2019.sln
+      feedRestore: $(GUID_FEED)
+      includeNuGetOrg: false
+  - task: VSBuild@1
+    displayName: Build solution dxtex_2019.sln 32dbg
+    inputs:
+      solution: dxtex_2019.sln
+      msbuildArgs: /p:PreferredToolArchitecture=x64
+      platform: x86
+      configuration: Debug
+  - task: VSBuild@1
+    displayName: Build solution dxtex_2019.sln 32rel
+    inputs:
+      solution: dxtex_2019.sln
+      msbuildArgs: /p:PreferredToolArchitecture=x64
+      platform: x86
+      configuration: Release
+  - task: VSBuild@1
+    displayName: Build solution dxtex_2019.sln 64dbg
+    inputs:
+      solution: dxtex_2019.sln
+      msbuildArgs: /p:PreferredToolArchitecture=x64
+      platform: x64
+      configuration: Debug
+  - task: VSBuild@1
+    displayName: Build solution dxtex_2019.sln 64rel
+    inputs:
+      solution: dxtex_2019.sln
+      msbuildArgs: /p:PreferredToolArchitecture=x64
+      platform: x64
+      configuration: Release
